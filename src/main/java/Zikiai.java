@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Zikiai {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String[] tasks = new String[100];
+        int counter = 0;
 
         String banner = " _____ _ _    _       _\n"
                 + "|__  /(_) | _(_) __ _(_)\n"
@@ -20,8 +22,18 @@ public class Zikiai {
             if (input.equals("bye")) {
                 break;
             }
+            if (input.equals("list")) {
+                System.out.println(line);
+                for (int i = 0; i < counter; i++) {
+                    System.out.println("    " + (i + 1) + ". " + tasks[i]);
+                }
+                System.out.println(line);
+                continue;
+            }
+            tasks[counter] = input;
+            counter++;
             System.out.println(line);
-            System.out.println("    " + input);
+            System.out.println("    added: " + input);
             System.out.println(line);
         }
         System.out.println(line);
