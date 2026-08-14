@@ -142,6 +142,47 @@ public class Zikiai {
                 continue;
             }
 
+            if (input.equals("event")) {
+                System.out.println(line);
+                System.out.println("The description of an event cannot be empty.");
+                System.out.println(line);
+                continue;
+            }
+
+            if (input.startsWith("event ")) {
+                String details = input.substring(6).trim();
+                int fromIndex = details.indexOf("/from");
+                int toIndex = fromIndex == -1
+                        ? -1
+                        : details.indexOf("/to", fromIndex + 5);
+
+                if (fromIndex == -1 || toIndex == -1) {
+                    System.out.println(line);
+                    System.out.println("Please specify an event using /from and /to.");
+                    System.out.println(line);
+                    continue;
+                }
+
+                String description = details.substring(0, fromIndex).trim();
+                String from = details.substring(fromIndex + 5, toIndex).trim();
+                String to = details.substring(toIndex + 3).trim();
+                if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                    System.out.println(line);
+                    System.out.println("Please provide an event, a start time, and an end time.");
+                    System.out.println(line);
+                    continue;
+                }
+
+                Task event = new Event(description, from, to);
+                tasks.add(event);
+                System.out.println(line);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("    " + event.getDescription());
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println(line);
+                continue;
+            }
+
             tasks.add(new Task(input));
             System.out.println(line);
             System.out.println("    added: " + input);
