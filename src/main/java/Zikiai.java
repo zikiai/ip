@@ -105,6 +105,43 @@ public class Zikiai {
                 continue;
             }
 
+            if (input.equals("deadline")) {
+                System.out.println(line);
+                System.out.println("The description of a deadline cannot be empty.");
+                System.out.println(line);
+                continue;
+            }
+
+            if (input.startsWith("deadline ")) {
+                String details = input.substring(9).trim();
+                int byIndex = details.indexOf("/by");
+
+                if (byIndex == -1) {
+                    System.out.println(line);
+                    System.out.println("Please specify a deadline using /by.");
+                    System.out.println(line);
+                    continue;
+                }
+
+                String description = details.substring(0, byIndex).trim();
+                String deadline = details.substring(byIndex + 3).trim();
+                if (description.isEmpty() || deadline.isEmpty()) {
+                    System.out.println(line);
+                    System.out.println("Please provide both a task and a deadline.");
+                    System.out.println(line);
+                    continue;
+                }
+
+                Task deadlineTask = new Deadline(description, deadline);
+                tasks.add(deadlineTask);
+                System.out.println(line);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("    " + deadlineTask.getDescription());
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println(line);
+                continue;
+            }
+
             tasks.add(new Task(input));
             System.out.println(line);
             System.out.println("    added: " + input);
