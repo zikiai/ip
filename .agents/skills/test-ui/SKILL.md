@@ -38,6 +38,6 @@ Do not continue to later cases after a compile error, nonzero program exit, time
 
 ## Maintain tests
 
-When behavior changes intentionally, update or add cases in `test/ui-test-plan.md`. Never change expected output merely to hide an unexplained failure. First confirm that the new behavior matches the user's requirement.
+After every project code update, review `test/ui-test-plan.md`. Update or add cases when the change adds or modifies commands, output, error handling, or other console-visible behavior. Record no plan change when existing cases already cover the update. Never change expected output merely to hide an unexplained failure; first confirm that the new behavior matches the user's requirement.
 
-Run the entire plan after editing it. In the final response, report the number of passing cases and identify the first failure when applicable. The runner's transcript is the required console-session record.
+Invoke this skill and run the entire plan after every project code update, whether or not the plan changed. In the final response, report the number of passing cases and identify the first failure when applicable. The runner's transcript is the required console-session record.
