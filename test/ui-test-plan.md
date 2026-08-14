@@ -251,3 +251,229 @@ OOPSSSIES!!! That task number does not exist.
 okay, bai bai
 {{SEPARATOR}}
 ```
+
+## TC-07 Reject malformed task creation without changing state
+
+**Aim:** Verify that malformed deadline and event commands do not add partial tasks or alter a previously stored todo.
+
+### Input
+
+```text
+todo keep me
+deadline return book
+deadline /by Sunday
+event meeting /from Monday
+event /from Monday /to Tuesday
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please specify a deadline using /by.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please provide both a task and a deadline.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please specify an event using /from and /to.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please provide an event, a start time, and an end time.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+## TC-08 Interleave malformed and valid status commands
+
+**Aim:** Verify that malformed action commands do not change a task and that later valid mark and unmark commands still work.
+
+### Input
+
+```text
+todo alpha
+mark homework
+mark 1
+unmark 1 task
+unmark 1
+delete two
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] alpha
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+{{SEPARATOR}}
+{{SEPARATOR}}
+Nice! I've marked this task as done:
+    [T][X] alpha
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+{{SEPARATOR}}
+{{SEPARATOR}}
+OK, I've marked this task as not done yet:
+    [T][ ] alpha
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] alpha
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+## TC-09 Preserve numbering after deletion
+
+**Aim:** Verify that deleting a middle task renumbers the remaining tasks and that subsequent commands use the new numbering.
+
+### Input
+
+```text
+todo first
+todo second
+todo third
+delete 2
+mark 2
+delete 3
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] first
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] second
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] third
+Now you have 3 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [T][ ] second
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Nice! I've marked this task as done:
+    [T][X] third
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] first
+2.[T][X] third
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+## TC-10 Handle empty lists and oversized task numbers
+
+**Aim:** Verify that operations on an empty list and task numbers larger than an integer are rejected without corrupting subsequently stored tasks.
+
+### Input
+
+```text
+list
+mark 1
+unmark 1
+delete 1
+todo saved task
+mark 999999999999999999999
+delete 999999999999999999999
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] saved task
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number is too large.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number is too large.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] saved task
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
