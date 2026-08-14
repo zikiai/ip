@@ -78,6 +78,33 @@ public class Zikiai {
                 System.out.println(line);
                 continue;
             }
+
+            if (input.equals("todo")) {
+                System.out.println(line);
+                System.out.println("The description of a todo cannot be empty.");
+                System.out.println(line);
+                continue;
+            }
+
+            if (input.startsWith("todo ")) {
+                String description = input.substring(5).trim();
+                if (description.isEmpty()) {
+                    System.out.println(line);
+                    System.out.println("The description of a todo cannot be empty.");
+                    System.out.println(line);
+                    continue;
+                }
+
+                Task todo = new Todo(description);
+                tasks.add(todo);
+                System.out.println(line);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("    " + todo.getDescription());
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println(line);
+                continue;
+            }
+
             tasks.add(new Task(input));
             System.out.println(line);
             System.out.println("    added: " + input);
