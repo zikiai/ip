@@ -143,10 +143,10 @@ Hello! I'm Zikiai.
 What can I do for you?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPS!!! The description of a todo cannot be empty.
+OOPSSSIES!!! The description of a todo cannot be empty.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPS!!! I'm sorry, but I don't know what that means :-(
+OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
 {{SEPARATOR}}
 {{SEPARATOR}}
 okay, bai bai
@@ -181,14 +181,71 @@ Got it. I've added this task:
 Now you have 1 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPS!!! That task number does not exist.
+OOPSSSIES!!! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPS!!! That task number does not exist.
+OOPSSSIES!!! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Here are the tasks in your list:
 1.[T][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+## TC-06 Delete a task and handle invalid deletion
+
+**Aim:** Verify that deleting a task removes the selected list item, displays it, updates the count, and rejects a nonexistent task number.
+
+### Input
+
+```text
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+delete 2
+list
+delete 0
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] read book
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
 okay, bai bai

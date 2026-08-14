@@ -31,11 +31,7 @@ public class Zikiai {
             try {
                 if (input.matches("mark \\d+")) {
                     String numberText = input.substring(5);
-                    int taskNumber = parseTaskNumber(numberText);
-                    int taskIndex = taskNumber - 1;
-                    if (taskIndex < 0 || taskIndex >= tasks.size()) {
-                        throw new ZikiaiException("That task number does not exist.");
-                    }
+                    int taskIndex = parseTaskIndex(numberText, tasks.size());
 
                     Task task = tasks.get(taskIndex);
                     task.markAsDone();
@@ -49,11 +45,7 @@ public class Zikiai {
 
                 if (input.matches("unmark \\d+")) {
                     String numberText = input.substring(7);
-                    int taskNumber = parseTaskNumber(numberText);
-                    int taskIndex = taskNumber - 1;
-                    if (taskIndex < 0 || taskIndex >= tasks.size()) {
-                        throw new ZikiaiException("That task number does not exist.");
-                    }
+                    int taskIndex = parseTaskIndex(numberText, tasks.size());
 
                     Task task = tasks.get(taskIndex);
                     task.markAsNotDone();
@@ -61,6 +53,19 @@ public class Zikiai {
                     System.out.println(line);
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("    " + task.getDescription());
+                    System.out.println(line);
+                    continue;
+                }
+
+                if (input.matches("delete \\d+")) {
+                    String numberText = input.substring(7);
+                    int taskIndex = parseTaskIndex(numberText, tasks.size());
+                    Task deletedTask = tasks.remove(taskIndex);
+
+                    System.out.println(line);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("    " + deletedTask.getDescription());
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println(line);
                     continue;
                 }
@@ -143,7 +148,6 @@ public class Zikiai {
                     printTaskAdded(event, tasks.size(), line);
                     continue;
                 }
-
                 throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
             } catch (ZikiaiException e) {
                 System.out.println(line);
@@ -159,18 +163,26 @@ public class Zikiai {
     }
 
     /**
-     * Converts a command argument into a task number.
+     * Converts a displayed task number into a validated zero-based list index.
      *
-     * @param numberText number supplied with a mark or unmark command
-     * @return parsed task number
-     * @throws ZikiaiException if the number is too large to be represented as an integer
+     * @param numberText number supplied with a mark, unmark, or delete command
+     * @param taskCount current number of stored tasks
+     * @return zero-based index of the requested task
+     * @throws ZikiaiException if the number is too large or does not identify a task
      */
-    private static int parseTaskNumber(String numberText) throws ZikiaiException {
+    private static int parseTaskIndex(String numberText, int taskCount) throws ZikiaiException {
+        int taskNumber;
         try {
-            return Integer.parseInt(numberText);
+            taskNumber = Integer.parseInt(numberText);
         } catch (NumberFormatException e) {
             throw new ZikiaiException("That task number is too large.");
         }
+
+        int taskIndex = taskNumber - 1;
+        if (taskIndex < 0 || taskIndex >= taskCount) {
+            throw new ZikiaiException("That task number does not exist.");
+        }
+        return taskIndex;
     }
 
     /**
