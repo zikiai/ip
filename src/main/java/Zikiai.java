@@ -1,6 +1,6 @@
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
@@ -28,169 +28,163 @@ public class Zikiai {
                 break;
             }
 
-            if (input.matches("mark \\d+")) {
-                String numberText = input.substring(5);
-                int taskNumber = Integer.parseInt(numberText);
-                int taskIndex = taskNumber - 1;
-                if (taskIndex < 0 || taskIndex >= tasks.size()) {
-                    System.out.println(line);
-                    System.out.println("That task number does not exist.");
-                    System.out.println(line);
-                    continue;
-                }
+            try {
+                if (input.matches("mark \\d+")) {
+                    String numberText = input.substring(5);
+                    int taskNumber = parseTaskNumber(numberText);
+                    int taskIndex = taskNumber - 1;
+                    if (taskIndex < 0 || taskIndex >= tasks.size()) {
+                        throw new ZikiaiException("That task number does not exist.");
+                    }
 
-                Task task = tasks.get(taskIndex);
-                task.markAsDone();
+                    Task task = tasks.get(taskIndex);
+                    task.markAsDone();
 
-                System.out.println(line);
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println("    " + task.getDescription());
-                System.out.println(line);
-                continue;
-            }
-
-            if (input.matches("unmark \\d+")) {
-                String numberText = input.substring(7);
-                int taskNumber = Integer.parseInt(numberText);
-                int taskIndex = taskNumber - 1;
-                if (taskIndex < 0 || taskIndex >= tasks.size()) {
                     System.out.println(line);
-                    System.out.println("That task number does not exist.");
+                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println("    " + task.getDescription());
                     System.out.println(line);
                     continue;
                 }
 
-                Task task = tasks.get(taskIndex);
-                task.markAsNotDone();
+                if (input.matches("unmark \\d+")) {
+                    String numberText = input.substring(7);
+                    int taskNumber = parseTaskNumber(numberText);
+                    int taskIndex = taskNumber - 1;
+                    if (taskIndex < 0 || taskIndex >= tasks.size()) {
+                        throw new ZikiaiException("That task number does not exist.");
+                    }
 
-                System.out.println(line);
-                System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println("    " + task.getDescription());
-                System.out.println(line);
-                continue;
-            }
-            if (input.equals("list")) {
-                System.out.println(line);
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + "." + tasks.get(i).getDescription());
-                }
-                System.out.println(line);
-                continue;
-            }
+                    Task task = tasks.get(taskIndex);
+                    task.markAsNotDone();
 
-            if (input.equals("todo")) {
-                System.out.println(line);
-                System.out.println("The description of a todo cannot be empty.");
-                System.out.println(line);
-                continue;
-            }
-
-            if (input.startsWith("todo ")) {
-                String description = input.substring(5).trim();
-                if (description.isEmpty()) {
                     System.out.println(line);
-                    System.out.println("The description of a todo cannot be empty.");
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println("    " + task.getDescription());
                     System.out.println(line);
                     continue;
                 }
 
-                Task todo = new Todo(description);
-                tasks.add(todo);
-                System.out.println(line);
-                System.out.println("Got it. I've added this task:");
-                System.out.println("    " + todo.getDescription());
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                System.out.println(line);
-                continue;
-            }
-
-            if (input.equals("deadline")) {
-                System.out.println(line);
-                System.out.println("The description of a deadline cannot be empty.");
-                System.out.println(line);
-                continue;
-            }
-
-            if (input.startsWith("deadline ")) {
-                String details = input.substring(9).trim();
-                int byIndex = details.indexOf("/by");
-
-                if (byIndex == -1) {
+                if (input.equals("list")) {
                     System.out.println(line);
-                    System.out.println("Please specify a deadline using /by.");
+                    System.out.println("Here are the tasks in your list:");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i).getDescription());
+                    }
                     System.out.println(line);
                     continue;
                 }
 
-                String description = details.substring(0, byIndex).trim();
-                String deadline = details.substring(byIndex + 3).trim();
-                if (description.isEmpty() || deadline.isEmpty()) {
-                    System.out.println(line);
-                    System.out.println("Please provide both a task and a deadline.");
-                    System.out.println(line);
+                if (input.equals("todo")) {
+                    throw new ZikiaiException("The description of a todo cannot be empty.");
+                }
+
+                if (input.startsWith("todo ")) {
+                    String description = input.substring(5).trim();
+                    if (description.isEmpty()) {
+                        throw new ZikiaiException("The description of a todo cannot be empty.");
+                    }
+
+                    Task todo = new Todo(description);
+                    tasks.add(todo);
+                    printTaskAdded(todo, tasks.size(), line);
                     continue;
                 }
 
-                Task deadlineTask = new Deadline(description, deadline);
-                tasks.add(deadlineTask);
-                System.out.println(line);
-                System.out.println("Got it. I've added this task:");
-                System.out.println("    " + deadlineTask.getDescription());
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                System.out.println(line);
-                continue;
-            }
+                if (input.equals("deadline")) {
+                    throw new ZikiaiException("The description of a deadline cannot be empty.");
+                }
 
-            if (input.equals("event")) {
-                System.out.println(line);
-                System.out.println("The description of an event cannot be empty.");
-                System.out.println(line);
-                continue;
-            }
+                if (input.startsWith("deadline ")) {
+                    String details = input.substring(9).trim();
+                    int byIndex = details.indexOf("/by");
 
-            if (input.startsWith("event ")) {
-                String details = input.substring(6).trim();
-                int fromIndex = details.indexOf("/from");
-                int toIndex = fromIndex == -1
-                        ? -1
-                        : details.indexOf("/to", fromIndex + 5);
+                    if (byIndex == -1) {
+                        throw new ZikiaiException("Please specify a deadline using /by.");
+                    }
 
-                if (fromIndex == -1 || toIndex == -1) {
-                    System.out.println(line);
-                    System.out.println("Please specify an event using /from and /to.");
-                    System.out.println(line);
+                    String description = details.substring(0, byIndex).trim();
+                    String deadline = details.substring(byIndex + 3).trim();
+                    if (description.isEmpty() || deadline.isEmpty()) {
+                        throw new ZikiaiException("Please provide both a task and a deadline.");
+                    }
+
+                    Task deadlineTask = new Deadline(description, deadline);
+                    tasks.add(deadlineTask);
+                    printTaskAdded(deadlineTask, tasks.size(), line);
                     continue;
                 }
 
-                String description = details.substring(0, fromIndex).trim();
-                String from = details.substring(fromIndex + 5, toIndex).trim();
-                String to = details.substring(toIndex + 3).trim();
-                if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    System.out.println(line);
-                    System.out.println("Please provide an event, a start time, and an end time.");
-                    System.out.println(line);
+                if (input.equals("event")) {
+                    throw new ZikiaiException("The description of an event cannot be empty.");
+                }
+
+                if (input.startsWith("event ")) {
+                    String details = input.substring(6).trim();
+                    int fromIndex = details.indexOf("/from");
+                    int toIndex = fromIndex == -1
+                            ? -1
+                            : details.indexOf("/to", fromIndex + 5);
+
+                    if (fromIndex == -1 || toIndex == -1) {
+                        throw new ZikiaiException("Please specify an event using /from and /to.");
+                    }
+
+                    String description = details.substring(0, fromIndex).trim();
+                    String from = details.substring(fromIndex + 5, toIndex).trim();
+                    String to = details.substring(toIndex + 3).trim();
+                    if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                        throw new ZikiaiException(
+                                "Please provide an event, a start time, and an end time.");
+                    }
+
+                    Task event = new Event(description, from, to);
+                    tasks.add(event);
+                    printTaskAdded(event, tasks.size(), line);
                     continue;
                 }
 
-                Task event = new Event(description, from, to);
-                tasks.add(event);
+                throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
+            } catch (ZikiaiException e) {
                 System.out.println(line);
-                System.out.println("Got it. I've added this task:");
-                System.out.println("    " + event.getDescription());
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println("OOPSSSIES!!! " + e.getMessage());
                 System.out.println(line);
-                continue;
             }
-
-            tasks.add(new Task(input));
-            System.out.println(line);
-            System.out.println("    added: " + input);
-            System.out.println(line);
         }
+
         System.out.println(line);
         System.out.println("okay, bai bai");
         System.out.println(line);
         scanner.close();
+    }
+
+    /**
+     * Converts a command argument into a task number.
+     *
+     * @param numberText number supplied with a mark or unmark command
+     * @return parsed task number
+     * @throws ZikiaiException if the number is too large to be represented as an integer
+     */
+    private static int parseTaskNumber(String numberText) throws ZikiaiException {
+        try {
+            return Integer.parseInt(numberText);
+        } catch (NumberFormatException e) {
+            throw new ZikiaiException("That task number is too large.");
+        }
+    }
+
+    /**
+     * Prints the confirmation shown after a task is added.
+     *
+     * @param task task that was added
+     * @param taskCount current number of stored tasks
+     * @param line separator used by the text interface
+     */
+    private static void printTaskAdded(Task task, int taskCount, String line) {
+        System.out.println(line);
+        System.out.println("Got it. I've added this task:");
+        System.out.println("    " + task.getDescription());
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println(line);
     }
 }

@@ -121,3 +121,76 @@ Here are the tasks in your list:
 okay, bai bai
 {{SEPARATOR}}
 ```
+
+## TC-04 Handle invalid commands with exceptions
+
+**Aim:** Verify that a missing todo description and an unknown command are reported without terminating the chatbot.
+
+### Input
+
+```text
+todo
+blah
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPS!!! The description of a todo cannot be empty.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPS!!! I'm sorry, but I don't know what that means :-(
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+## TC-05 Handle invalid task numbers with exceptions
+
+**Aim:** Verify that mark and unmark commands report task numbers that do not exist and continue accepting commands.
+
+### Input
+
+```text
+todo read book
+mark 99
+unmark 0
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] read book
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPS!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPS!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
