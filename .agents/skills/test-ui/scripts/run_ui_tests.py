@@ -95,7 +95,7 @@ def load_cases(plan_path: Path) -> list[TestCase]:
 
 def compile_project(repo_root: Path, output_dir: Path) -> None:
     """Compile every Java source file into the temporary output directory."""
-    sources = sorted((repo_root / "src/main/java").glob("*.java"))
+    sources = sorted((repo_root / "src/main/java").rglob("*.java"))
     if not sources:
         raise RuntimeError("No Java source files found in src/main/java")
     result = subprocess.run(
@@ -206,7 +206,7 @@ def main() -> int:
         default=repo_root / "test/ui-test-plan.md",
         help="Markdown test plan to run",
     )
-    parser.add_argument("--main-class", default="Zikiai", help="Java main class")
+    parser.add_argument("--main-class", default="zikiai.Zikiai", help="Java main class")
     args = parser.parse_args()
 
     try:
