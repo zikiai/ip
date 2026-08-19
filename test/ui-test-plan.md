@@ -641,3 +641,201 @@ okay, bai bai
 [T][ ] | read book
 [E][X] | project meeting | Mon 2pm | 4pm
 ```
+
+## TC-14 Reject an unknown saved task type
+
+**Aim:** Verify that an unknown task type is reported safely and the chatbot exits before overwriting the corrupted file.
+
+### Initial data file
+
+```text
+[Z][ ] | mysterious task
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[Z][ ] | mysterious task
+```
+
+## TC-15 Reject malformed saved fields
+
+**Aim:** Verify that a missing deadline field is detected instead of constructing a partial task.
+
+### Initial data file
+
+```text
+[T][ ] | valid task
+[D][ ] | return book
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 2 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | valid task
+[D][ ] | return book
+```
+
+## TC-16 Reject an invalid saved status
+
+**Aim:** Verify that only `[X]` and `[ ]` completion statuses are accepted from storage.
+
+### Initial data file
+
+```text
+[T][?] | uncertain task
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][?] | uncertain task
+```
+
+## TC-17 Reject reserved separators without changing state
+
+**Aim:** Verify that pipe characters in new task fields are rejected before they can create ambiguous saved data, while valid stored tasks remain unchanged.
+
+### Input
+
+```text
+todo keep me
+todo bad | task
+deadline return | book /by Sunday
+event meeting /from Mon | noon /to 4pm
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | keep me
+```
+
+## TC-18 Load an empty data file
+
+**Aim:** Verify that an existing empty data file behaves like an empty task list and does not cause a startup error.
+
+### Initial data file
+
+```text
+
+```
+
+### Input
+
+```text
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+
+```

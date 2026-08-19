@@ -15,55 +15,101 @@ public class Storage {
      * Writes the complete task list to the data file, replacing its old contents.
      *
      * @param tasks tasks to save
-     * @throws IOException if the directory or file cannot be written
+     * @throws ZikiaiException if the directory or file cannot be written
      */
-    public void save(List<Task> tasks) throws IOException {
-        Files.createDirectories(FILE_PATH.getParent());
+    public void save(List<Task> tasks) throws ZikiaiException {
+        try {
+            Files.createDirectories(FILE_PATH.getParent());
 
-        List<String> lines = new ArrayList<>();
-        for (Task task : tasks) {
-            lines.add(task.toDataString());
+            List<String> lines = new ArrayList<>();
+            for (Task task : tasks) {
+                lines.add(task.toDataString());
+            }
+            Files.write(FILE_PATH, lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new ZikiaiException("I couldn't save your tasks to the data file.", e);
         }
-        Files.write(FILE_PATH, lines, StandardCharsets.UTF_8);
     }
 
     /**
      * Loads tasks from the data file. A missing file represents an empty task list.
      *
      * @return tasks reconstructed from the data file
-     * @throws IOException if the data file cannot be read
+     * @throws ZikiaiException if the file cannot be read or contains invalid data
      */
-    public List<Task> load() throws IOException {
+    public List<Task> load() throws ZikiaiException {
         List<Task> tasks = new ArrayList<>();
         if (!Files.exists(FILE_PATH)) {
             return tasks;
         }
 
-        List<String> lines = Files.readAllLines(FILE_PATH, StandardCharsets.UTF_8);
-        for (String line : lines) {
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(FILE_PATH, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new ZikiaiException("I couldn't read your saved tasks.", e);
+        }
+
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
             if (line.isBlank()) {
                 continue;
             }
-
-            String[] parts = line.split("\\s*\\|\\s*", -1);
-            String taskHeader = parts[0];
-            Task task;
-
-            if (taskHeader.startsWith("[T]")) {
-                task = new Todo(parts[1]);
-            } else if (taskHeader.startsWith("[D]")) {
-                task = new Deadline(parts[1], parts[2]);
-            } else if (taskHeader.startsWith("[E]")) {
-                task = new Event(parts[1], parts[2], parts[3]);
-            } else {
-                throw new IOException("Unknown task type in data file: " + taskHeader);
-            }
-
-            if (taskHeader.contains("[X]")) {
-                task.markAsDone();
-            }
-            tasks.add(task);
+            tasks.add(parseTask(line, i + 1));
         }
         return tasks;
+    }
+
+    /**
+     * Converts one validated data-file line into its corresponding task type.
+     *
+     * @param line line to parse
+     * @param lineNumber one-based line number used in error messages
+     * @return reconstructed task
+     * @throws ZikiaiException if the line does not match the storage format
+     */
+    private Task parseTask(String line, int lineNumber) throws ZikiaiException {
+        String[] parts = line.split("\\s*\\|\\s*", -1);
+        String taskHeader = parts[0];
+
+        if (!taskHeader.matches("\\[[TDE]\\]\\[[X ]\\]")) {
+            throw invalidDataLine(lineNumber);
+        }
+
+        char taskType = taskHeader.charAt(1);
+        int expectedParts = taskType == 'T' ? 2 : taskType == 'D' ? 3 : 4;
+        if (parts.length != expectedParts) {
+            throw invalidDataLine(lineNumber);
+        }
+        for (int i = 1; i < parts.length; i++) {
+            if (parts[i].isBlank()) {
+                throw invalidDataLine(lineNumber);
+            }
+        }
+
+        Task task;
+        if (taskType == 'T') {
+            task = new Todo(parts[1]);
+        } else if (taskType == 'D') {
+            task = new Deadline(parts[1], parts[2]);
+        } else {
+            task = new Event(parts[1], parts[2], parts[3]);
+        }
+
+        if (taskHeader.charAt(4) == 'X') {
+            task.markAsDone();
+        }
+        return task;
+    }
+
+    /**
+     * Creates a consistent error for malformed saved data.
+     *
+     * @param lineNumber one-based line number containing invalid data
+     * @return exception describing the corrupt line
+     */
+    private ZikiaiException invalidDataLine(int lineNumber) {
+        return new ZikiaiException(
+                "I couldn't load the saved tasks because line " + lineNumber + " is invalid.");
     }
 }

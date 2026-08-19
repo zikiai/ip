@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -6,10 +5,8 @@ import java.util.Scanner;
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
  */
 public class Zikiai {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Storage storage = new Storage();
-        List<Task> tasks = storage.load();
 
         String banner = " _____ _ _    _       _\n"
                 + "|__  /(_) | _(_) __ _(_)\n"
@@ -22,6 +19,16 @@ public class Zikiai {
         System.out.println("Hello! I'm Zikiai.");
         System.out.println("What can I do for you?");
         System.out.println(line);
+
+        Storage storage = new Storage();
+        List<Task> tasks;
+        try {
+            tasks = storage.load();
+        } catch (ZikiaiException e) {
+            printError(e, line);
+            scanner.close();
+            return;
+        }
 
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
@@ -93,6 +100,7 @@ public class Zikiai {
                     if (description.isEmpty()) {
                         throw new ZikiaiException("The description of a todo cannot be empty.");
                     }
+                    validateStorageText(description);
 
                     Task todo = new Todo(description);
                     tasks.add(todo);
@@ -118,6 +126,7 @@ public class Zikiai {
                     if (description.isEmpty() || deadline.isEmpty()) {
                         throw new ZikiaiException("Please provide both a task and a deadline.");
                     }
+                    validateStorageText(description, deadline);
 
                     Task deadlineTask = new Deadline(description, deadline);
                     tasks.add(deadlineTask);
@@ -148,6 +157,7 @@ public class Zikiai {
                         throw new ZikiaiException(
                                 "Please provide an event, a start time, and an end time.");
                     }
+                    validateStorageText(description, from, to);
 
                     Task event = new Event(description, from, to);
                     tasks.add(event);
@@ -157,9 +167,7 @@ public class Zikiai {
                 }
                 throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
             } catch (ZikiaiException e) {
-                System.out.println(line);
-                System.out.println("OOPSSSIES!!! " + e.getMessage());
-                System.out.println(line);
+                printError(e, line);
             }
         }
 
@@ -204,6 +212,32 @@ public class Zikiai {
         System.out.println("Got it. I've added this task:");
         System.out.println("    " + task.getDescription());
         System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println(line);
+    }
+
+    /**
+     * Rejects the field separator because it would make saved data ambiguous.
+     *
+     * @param values task fields that will be written to storage
+     * @throws ZikiaiException if any field contains the reserved separator
+     */
+    private static void validateStorageText(String... values) throws ZikiaiException {
+        for (String value : values) {
+            if (value.contains("|")) {
+                throw new ZikiaiException("Task details cannot contain the | character.");
+            }
+        }
+    }
+
+    /**
+     * Prints a user-facing chatbot error.
+     *
+     * @param exception error to display
+     * @param line separator used by the text interface
+     */
+    private static void printError(ZikiaiException exception, String line) {
+        System.out.println(line);
+        System.out.println("OOPSSSIES!!! " + exception.getMessage());
         System.out.println(line);
     }
 }
