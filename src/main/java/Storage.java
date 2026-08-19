@@ -16,16 +16,16 @@ public class Storage {
     /**
      * Writes the complete task list to the data file, replacing its old contents.
      *
-     * @param tasks tasks to save
+     * @param tasks task list to save
      * @throws ZikiaiException if the directory or file cannot be written
      */
-    public void save(List<Task> tasks) throws ZikiaiException {
+    public void save(TaskList tasks) throws ZikiaiException {
         try {
             Files.createDirectories(FILE_PATH.getParent());
 
             List<String> lines = new ArrayList<>();
-            for (Task task : tasks) {
-                lines.add(task.toDataString());
+            for (int i = 0; i < tasks.size(); i++) {
+                lines.add(tasks.get(i).toDataString());
             }
             Files.write(FILE_PATH, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
