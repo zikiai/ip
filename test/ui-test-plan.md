@@ -43,12 +43,12 @@ okay, bai bai
 
 ## TC-02 Add and mark a deadline
 
-**Aim:** Verify that a deadline is dissected around `/by`, stored, marked as done, and listed with its deadline.
+**Aim:** Verify that an ISO deadline date is parsed, displayed in a friendly format, stored, marked as done, and listed correctly.
 
 ### Input
 
 ```text
-deadline return book /by Sunday
+deadline return book /by 2026-08-23
 mark 1
 list
 bye
@@ -64,16 +64,16 @@ What can I do for you?
 {{SEPARATOR}}
 {{SEPARATOR}}
 Got it. I've added this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 1 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Nice! I've marked this task as done:
-    [D][X] return book (by: Sunday)
+    [D][X] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
 Here are the tasks in your list:
-1.[D][X] return book (by: Sunday)
+1.[D][X] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
 okay, bai bai
@@ -205,7 +205,7 @@ okay, bai bai
 
 ```text
 todo read book
-deadline return book /by Sunday
+deadline return book /by 2026-08-23
 event project meeting /from Mon 2pm /to 4pm
 delete 2
 list
@@ -228,7 +228,7 @@ Now you have 1 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Got it. I've added this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 2 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -238,7 +238,7 @@ Now you have 3 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Noted. I've removed this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 2 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -488,7 +488,7 @@ okay, bai bai
 
 ```text
 todo read book
-deadline return book /by Sunday
+deadline return book /by 2026-08-23
 event project meeting /from Mon 2pm /to 4pm
 mark 1
 delete 2
@@ -510,7 +510,7 @@ Now you have 1 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Got it. I've added this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 2 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -524,7 +524,7 @@ Nice! I've marked this task as done:
 {{SEPARATOR}}
 {{SEPARATOR}}
 Noted. I've removed this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 2 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -588,7 +588,7 @@ okay, bai bai
 
 ```text
 [T][X] | read book
-[D][ ] | return book | Sunday
+[D][ ] | return book | 2026-08-23
 [E][X] | project meeting | Mon 2pm | 4pm
 ```
 
@@ -613,7 +613,7 @@ What can I do for you?
 {{SEPARATOR}}
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Aug 23 2026)
 3.[E][X] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -622,7 +622,7 @@ OK, I've marked this task as not done yet:
 {{SEPARATOR}}
 {{SEPARATOR}}
 Noted. I've removed this task:
-    [D][ ] return book (by: Sunday)
+    [D][ ] return book (by: Aug 23 2026)
 Now you have 2 tasks in the list.
 {{SEPARATOR}}
 {{SEPARATOR}}
@@ -838,4 +838,100 @@ okay, bai bai
 
 ```text
 
+```
+
+## TC-19 Validate deadline dates without changing existing tasks
+
+**Aim:** Interleave valid and invalid deadline commands to verify that non-ISO and impossible dates are rejected without changing the list, while a valid leap-day deadline is accepted.
+
+### Input
+
+```text
+todo keep me
+deadline words /by Sunday
+deadline impossible /by 2025-02-29
+list
+deadline leap day /by 2024-02-29
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [D][ ] leap day (by: Feb 29 2024)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+2.[D][ ] leap day (by: Feb 29 2024)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | keep me
+[D][ ] | leap day | 2024-02-29
+```
+
+## TC-20 Reject an impossible date in saved data
+
+**Aim:** Verify that an impossible saved deadline date is reported as corrupted data and is not overwritten.
+
+### Initial data file
+
+```text
+[D][ ] | impossible task | 2025-02-29
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[D][ ] | impossible task | 2025-02-29
 ```
