@@ -5,6 +5,8 @@ The UI test runner starts a fresh chatbot process for each case. Commands are su
 - `{{SEPARATOR}}`: 60 underscore characters
 - `{{BANNER}}`: the five-line Zikiai banner
 
+A case can include an optional `Initial data file` block to seed `data/zikiai.txt` before startup. It can also include an optional `Expected data file` block, which the runner compares with the file after the commands finish.
+
 ## TC-01 Add and list a todo
 
 **Aim:** Verify that a todo is stored, displayed with the todo type and incomplete status, and included in the task count.
@@ -476,4 +478,364 @@ Here are the tasks in your list:
 {{SEPARATOR}}
 okay, bai bai
 {{SEPARATOR}}
+```
+
+## TC-11 Save the latest task state to disk
+
+**Aim:** Verify that adding, marking, and deleting tasks rewrites the data file with the latest task types, statuses, and details.
+
+### Input
+
+```text
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+mark 1
+delete 2
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] read book
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Nice! I've marked this task as done:
+    [T][X] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][X] | read book
+[E][ ] | project meeting | Mon 2pm | 4pm
+```
+
+## TC-12 Save an empty list after deleting the last task
+
+**Aim:** Verify that deleting the only task truncates the data file instead of leaving stale task data behind.
+
+### Input
+
+```text
+todo temporary task
+delete 1
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] temporary task
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [T][ ] temporary task
+Now you have 0 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+
+```
+
+## TC-13 Load tasks and preserve their state
+
+**Aim:** Verify that startup reconstructs all task types and done statuses, and that loaded tasks can still be unmarked and deleted correctly.
+
+### Initial data file
+
+```text
+[T][X] | read book
+[D][ ] | return book | Sunday
+[E][X] | project meeting | Mon 2pm | 4pm
+```
+
+### Input
+
+```text
+list
+unmark 1
+delete 2
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][X] project meeting (from: Mon 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+OK, I've marked this task as not done yet:
+    [T][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][X] project meeting (from: Mon 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | read book
+[E][X] | project meeting | Mon 2pm | 4pm
+```
+
+## TC-14 Reject an unknown saved task type
+
+**Aim:** Verify that an unknown task type is reported safely and the chatbot exits before overwriting the corrupted file.
+
+### Initial data file
+
+```text
+[Z][ ] | mysterious task
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[Z][ ] | mysterious task
+```
+
+## TC-15 Reject malformed saved fields
+
+**Aim:** Verify that a missing deadline field is detected instead of constructing a partial task.
+
+### Initial data file
+
+```text
+[T][ ] | valid task
+[D][ ] | return book
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 2 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | valid task
+[D][ ] | return book
+```
+
+## TC-16 Reject an invalid saved status
+
+**Aim:** Verify that only `[X]` and `[ ]` completion statuses are accepted from storage.
+
+### Initial data file
+
+```text
+[T][?] | uncertain task
+```
+
+### Input
+
+```text
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][?] | uncertain task
+```
+
+## TC-17 Reject reserved separators without changing state
+
+**Aim:** Verify that pipe characters in new task fields are rejected before they can create ambiguous saved data, while valid stored tasks remain unchanged.
+
+### Input
+
+```text
+todo keep me
+todo bad | task
+deadline return | book /by Sunday
+event meeting /from Mon | noon /to 4pm
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Task details cannot contain the | character.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | keep me
+```
+
+## TC-18 Load an empty data file
+
+**Aim:** Verify that an existing empty data file behaves like an empty task list and does not cause a startup error.
+
+### Initial data file
+
+```text
+
+```
+
+### Input
+
+```text
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+
 ```

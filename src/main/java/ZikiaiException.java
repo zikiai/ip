@@ -1,5 +1,5 @@
 /**
- * Represents an error caused by an invalid command entered in Zikiai.
+ * Represents an error that Zikiai can explain to the user.
  */
 public class ZikiaiException extends Exception {
 
@@ -10,5 +10,15 @@ public class ZikiaiException extends Exception {
      */
     public ZikiaiException(String message) {
         super(message);
+    }
+
+    /**
+     * Creates an exception with a user-facing message and its original cause.
+     *
+     * @param message explanation shown to the user
+     * @param cause lower-level error that caused this exception
+     */
+    public ZikiaiException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

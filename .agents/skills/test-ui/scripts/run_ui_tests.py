@@ -33,6 +33,8 @@ class TestCase:
     aim: str
     commands: str
     expected: str
+    initial_data: str | None
+    expected_data: str | None
 
 
 def normalize(text: str) -> str:
@@ -52,6 +54,13 @@ def fenced_block(section: str, heading: str, case_name: str) -> str:
     if not match:
         raise ValueError(f"{case_name}: missing fenced '{heading}' block")
     return match.group(1)
+
+
+def optional_fenced_block(section: str, heading: str) -> str | None:
+    """Extract an optional fenced block beneath a level-three heading."""
+    pattern = rf"### {re.escape(heading)}\s*\n```[^\n]*\n(.*?)\n```"
+    match = re.search(pattern, section, flags=re.DOTALL)
+    return match.group(1) if match else None
 
 
 def load_cases(plan_path: Path) -> list[TestCase]:
@@ -74,6 +83,8 @@ def load_cases(plan_path: Path) -> list[TestCase]:
                 aim=aim_match.group(1).strip(),
                 commands=fenced_block(section, "Input", name),
                 expected=expand_placeholders(fenced_block(section, "Expected output", name)),
+                initial_data=optional_fenced_block(section, "Initial data file"),
+                expected_data=optional_fenced_block(section, "Expected data file"),
             )
         )
 
@@ -105,13 +116,18 @@ def print_block(label: str, contents: str) -> None:
     print(contents)
 
 
-def run_case(case: TestCase, repo_root: Path, class_dir: Path, main_class: str) -> bool:
+def run_case(case: TestCase, run_dir: Path, class_dir: Path, main_class: str) -> bool:
     """Run and report one case, returning whether its output matched."""
+    if case.initial_data is not None:
+        data_path = run_dir / "data/zikiai.txt"
+        data_path.parent.mkdir(parents=True)
+        data_path.write_text(case.initial_data + "\n", encoding="utf-8")
+
     stdin = case.commands + "\n"
     try:
         result = subprocess.run(
             ["java", "-cp", str(class_dir), main_class],
-            cwd=repo_root,
+            cwd=run_dir,
             input=stdin,
             capture_output=True,
             text=True,
@@ -153,6 +169,29 @@ def run_case(case: TestCase, repo_root: Path, class_dir: Path, main_class: str) 
         print_block("Difference", diff)
         return False
 
+    if case.expected_data is not None:
+        data_path = run_dir / "data/zikiai.txt"
+        actual_data = normalize(
+            data_path.read_text(encoding="utf-8") if data_path.exists() else "<missing>"
+        )
+        expected_data = normalize(case.expected_data)
+        print_block("Saved data file", actual_data)
+        if actual_data != expected_data:
+            print("FAIL: saved data did not match expected data")
+            print_block("Expected data file", expected_data)
+            print_block("Actual data file", actual_data)
+            diff = "\n".join(
+                difflib.unified_diff(
+                    expected_data.splitlines(),
+                    actual_data.splitlines(),
+                    fromfile="expected-data",
+                    tofile="actual-data",
+                    lineterm="",
+                )
+            )
+            print_block("Difference", diff)
+            return False
+
     print("PASS")
     return True
 
@@ -173,10 +212,14 @@ def main() -> int:
     try:
         cases = load_cases(args.plan)
         with tempfile.TemporaryDirectory(prefix="test-ui-") as directory:
-            class_dir = Path(directory)
+            temporary_root = Path(directory)
+            class_dir = temporary_root / "classes"
+            class_dir.mkdir()
             compile_project(repo_root, class_dir)
             for completed, case in enumerate(cases):
-                if not run_case(case, repo_root, class_dir, args.main_class):
+                run_dir = temporary_root / f"case-{completed + 1}"
+                run_dir.mkdir()
+                if not run_case(case, run_dir, class_dir, args.main_class):
                     print(f"\nStopped after {completed} passing test case(s).")
                     return 1
     except (OSError, RuntimeError, ValueError, subprocess.TimeoutExpired) as error:

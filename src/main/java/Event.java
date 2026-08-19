@@ -23,4 +23,10 @@ public class Event extends Task {
         return "[E]" + super.getDescription()
                 + " (from: " + from + " to: " + to + ")";
     }
+
+    @Override
+    public String toDataString() {
+        return "[E][" + getStatusIcon() + "] | " + getDescriptionText()
+                + " | " + from + " | " + to;
+    }
 }
