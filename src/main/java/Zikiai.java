@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 
 /**
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
@@ -11,9 +10,9 @@ public class Zikiai {
         ui.showWelcome();
 
         Storage storage = new Storage();
-        List<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = storage.load();
+            tasks = new TaskList(storage.load());
         } catch (ZikiaiException e) {
             ui.showError(e);
             ui.close();
@@ -31,8 +30,7 @@ public class Zikiai {
                     String numberText = input.substring(5);
                     int taskIndex = parseTaskIndex(numberText, tasks.size());
 
-                    Task task = tasks.get(taskIndex);
-                    task.markAsDone();
+                    Task task = tasks.markAsDone(taskIndex);
                     storage.save(tasks);
 
                     ui.showTaskMarked(task);
@@ -43,8 +41,7 @@ public class Zikiai {
                     String numberText = input.substring(7);
                     int taskIndex = parseTaskIndex(numberText, tasks.size());
 
-                    Task task = tasks.get(taskIndex);
-                    task.markAsNotDone();
+                    Task task = tasks.markAsNotDone(taskIndex);
                     storage.save(tasks);
 
                     ui.showTaskUnmarked(task);
@@ -54,7 +51,7 @@ public class Zikiai {
                 if (input.matches("delete \\d+")) {
                     String numberText = input.substring(7);
                     int taskIndex = parseTaskIndex(numberText, tasks.size());
-                    Task deletedTask = tasks.remove(taskIndex);
+                    Task deletedTask = tasks.delete(taskIndex);
                     storage.save(tasks);
 
                     ui.showTaskDeleted(deletedTask, tasks.size());

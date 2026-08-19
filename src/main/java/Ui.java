@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -91,9 +90,9 @@ public class Ui {
     /**
      * Displays every task using one-based numbering.
      *
-     * @param tasks tasks to display
+     * @param tasks task list to display
      */
-    public void showTaskList(List<Task> tasks) {
+    public void showTaskList(TaskList tasks) {
         System.out.println(SEPARATOR);
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
