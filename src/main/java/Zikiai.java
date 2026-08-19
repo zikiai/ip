@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -6,9 +7,10 @@ import java.util.Scanner;
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
  */
 public class Zikiai {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         List<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage();
 
         String banner = " _____ _ _    _       _\n"
                 + "|__  /(_) | _(_) __ _(_)\n"
@@ -35,6 +37,7 @@ public class Zikiai {
 
                     Task task = tasks.get(taskIndex);
                     task.markAsDone();
+                    storage.save(tasks);
 
                     System.out.println(line);
                     System.out.println("Nice! I've marked this task as done:");
@@ -49,6 +52,7 @@ public class Zikiai {
 
                     Task task = tasks.get(taskIndex);
                     task.markAsNotDone();
+                    storage.save(tasks);
 
                     System.out.println(line);
                     System.out.println("OK, I've marked this task as not done yet:");
@@ -61,6 +65,7 @@ public class Zikiai {
                     String numberText = input.substring(7);
                     int taskIndex = parseTaskIndex(numberText, tasks.size());
                     Task deletedTask = tasks.remove(taskIndex);
+                    storage.save(tasks);
 
                     System.out.println(line);
                     System.out.println("Noted. I've removed this task:");
@@ -92,6 +97,7 @@ public class Zikiai {
 
                     Task todo = new Todo(description);
                     tasks.add(todo);
+                    storage.save(tasks);
                     printTaskAdded(todo, tasks.size(), line);
                     continue;
                 }
@@ -116,6 +122,7 @@ public class Zikiai {
 
                     Task deadlineTask = new Deadline(description, deadline);
                     tasks.add(deadlineTask);
+                    storage.save(tasks);
                     printTaskAdded(deadlineTask, tasks.size(), line);
                     continue;
                 }
@@ -145,6 +152,7 @@ public class Zikiai {
 
                     Task event = new Event(description, from, to);
                     tasks.add(event);
+                    storage.save(tasks);
                     printTaskAdded(event, tasks.size(), line);
                     continue;
                 }

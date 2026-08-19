@@ -19,4 +19,9 @@ public class Deadline extends Task {
     public String getDescription() {
         return "[D]" + super.getDescription() + " (by: " + deadline + ")";
     }
+
+    @Override
+    public String toDataString() {
+        return "[D][" + getStatusIcon() + "] | " + getDescriptionText() + " | " + deadline;
+    }
 }

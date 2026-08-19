@@ -41,4 +41,23 @@ public class Task {
     public String getDescription() {
         return "[" + getStatusIcon() + "] " + description;
     }
+
+    /**
+     * Returns the unformatted text used to describe this task.
+     *
+     * @return raw task description
+     */
+    protected String getDescriptionText() {
+        return description;
+    }
+
+    /**
+     * Returns this task in the format used by the data file.
+     * Subclasses override this method to include their task type and details.
+     *
+     * @return storage representation of this task
+     */
+    public String toDataString() {
+        return "[?][" + getStatusIcon() + "] | " + description;
+    }
 }

@@ -5,6 +5,8 @@ The UI test runner starts a fresh chatbot process for each case. Commands are su
 - `{{SEPARATOR}}`: 60 underscore characters
 - `{{BANNER}}`: the five-line Zikiai banner
 
+A case can also include an optional `Expected data file` block. When present, the runner compares it with the generated `data/zikiai.txt` file.
+
 ## TC-01 Add and list a todo
 
 **Aim:** Verify that a todo is stored, displayed with the todo type and incomplete status, and included in the task count.
@@ -476,4 +478,104 @@ Here are the tasks in your list:
 {{SEPARATOR}}
 okay, bai bai
 {{SEPARATOR}}
+```
+
+## TC-11 Save the latest task state to disk
+
+**Aim:** Verify that adding, marking, and deleting tasks rewrites the data file with the latest task types, statuses, and details.
+
+### Input
+
+```text
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+mark 1
+delete 2
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] read book
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Nice! I've marked this task as done:
+    [T][X] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][X] | read book
+[E][ ] | project meeting | Mon 2pm | 4pm
+```
+
+## TC-12 Save an empty list after deleting the last task
+
+**Aim:** Verify that deleting the only task truncates the data file instead of leaving stale task data behind.
+
+### Input
+
+```text
+todo temporary task
+delete 1
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] temporary task
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [T][ ] temporary task
+Now you have 0 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+
 ```
