@@ -5,7 +5,7 @@ The UI test runner starts a fresh chatbot process for each case. Commands are su
 - `{{SEPARATOR}}`: 60 underscore characters
 - `{{BANNER}}`: the five-line Zikiai banner
 
-A case can also include an optional `Expected data file` block. When present, the runner compares it with the generated `data/zikiai.txt` file.
+A case can include an optional `Initial data file` block to seed `data/zikiai.txt` before startup. It can also include an optional `Expected data file` block, which the runner compares with the file after the commands finish.
 
 ## TC-01 Add and list a todo
 
@@ -578,4 +578,66 @@ okay, bai bai
 
 ```text
 
+```
+
+## TC-13 Load tasks and preserve their state
+
+**Aim:** Verify that startup reconstructs all task types and done statuses, and that loaded tasks can still be unmarked and deleted correctly.
+
+### Initial data file
+
+```text
+[T][X] | read book
+[D][ ] | return book | Sunday
+[E][X] | project meeting | Mon 2pm | 4pm
+```
+
+### Input
+
+```text
+list
+unmark 1
+delete 2
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][X] project meeting (from: Mon 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+OK, I've marked this task as not done yet:
+    [T][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Noted. I've removed this task:
+    [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][X] project meeting (from: Mon 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | read book
+[E][X] | project meeting | Mon 2pm | 4pm
 ```

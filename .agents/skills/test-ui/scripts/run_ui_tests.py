@@ -33,6 +33,7 @@ class TestCase:
     aim: str
     commands: str
     expected: str
+    initial_data: str | None
     expected_data: str | None
 
 
@@ -82,6 +83,7 @@ def load_cases(plan_path: Path) -> list[TestCase]:
                 aim=aim_match.group(1).strip(),
                 commands=fenced_block(section, "Input", name),
                 expected=expand_placeholders(fenced_block(section, "Expected output", name)),
+                initial_data=optional_fenced_block(section, "Initial data file"),
                 expected_data=optional_fenced_block(section, "Expected data file"),
             )
         )
@@ -116,6 +118,11 @@ def print_block(label: str, contents: str) -> None:
 
 def run_case(case: TestCase, run_dir: Path, class_dir: Path, main_class: str) -> bool:
     """Run and report one case, returning whether its output matched."""
+    if case.initial_data is not None:
+        data_path = run_dir / "data/zikiai.txt"
+        data_path.parent.mkdir(parents=True)
+        data_path.write_text(case.initial_data + "\n", encoding="utf-8")
+
     stdin = case.commands + "\n"
     try:
         result = subprocess.run(

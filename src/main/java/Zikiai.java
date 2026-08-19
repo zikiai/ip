@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,8 +8,8 @@ import java.util.Scanner;
 public class Zikiai {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        List<Task> tasks = new ArrayList<>();
         Storage storage = new Storage();
+        List<Task> tasks = storage.load();
 
         String banner = " _____ _ _    _       _\n"
                 + "|__  /(_) | _(_) __ _(_)\n"
