@@ -1,39 +1,27 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
  */
 public class Zikiai {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        String banner = " _____ _ _    _       _\n"
-                + "|__  /(_) | _(_) __ _(_)\n"
-                + "  / / | | |/ / |/ _` | |\n"
-                + " / /_ | |   <| | (_| | |\n"
-                + "/____||_|_|\\_\\_|\\__,_|_|";
-        String line = "_".repeat(60);
-        System.out.println(line);
-        System.out.println(banner);
-        System.out.println("Hello! I'm Zikiai.");
-        System.out.println("What can I do for you?");
-        System.out.println(line);
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         Storage storage = new Storage();
         List<Task> tasks;
         try {
             tasks = storage.load();
         } catch (ZikiaiException e) {
-            printError(e, line);
-            scanner.close();
+            ui.showError(e);
+            ui.close();
             return;
         }
 
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+        while (ui.hasNextCommand()) {
+            String input = ui.readCommand();
             if (input.equals("bye")) {
                 break;
             }
@@ -47,10 +35,7 @@ public class Zikiai {
                     task.markAsDone();
                     storage.save(tasks);
 
-                    System.out.println(line);
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("    " + task.getDescription());
-                    System.out.println(line);
+                    ui.showTaskMarked(task);
                     continue;
                 }
 
@@ -62,10 +47,7 @@ public class Zikiai {
                     task.markAsNotDone();
                     storage.save(tasks);
 
-                    System.out.println(line);
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("    " + task.getDescription());
-                    System.out.println(line);
+                    ui.showTaskUnmarked(task);
                     continue;
                 }
 
@@ -75,21 +57,12 @@ public class Zikiai {
                     Task deletedTask = tasks.remove(taskIndex);
                     storage.save(tasks);
 
-                    System.out.println(line);
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("    " + deletedTask.getDescription());
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                    System.out.println(line);
+                    ui.showTaskDeleted(deletedTask, tasks.size());
                     continue;
                 }
 
                 if (input.equals("list")) {
-                    System.out.println(line);
-                    System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + "." + tasks.get(i).getDescription());
-                    }
-                    System.out.println(line);
+                    ui.showTaskList(tasks);
                     continue;
                 }
 
@@ -107,7 +80,7 @@ public class Zikiai {
                     Task todo = new Todo(description);
                     tasks.add(todo);
                     storage.save(tasks);
-                    printTaskAdded(todo, tasks.size(), line);
+                    ui.showTaskAdded(todo, tasks.size());
                     continue;
                 }
 
@@ -134,7 +107,7 @@ public class Zikiai {
                     Task deadlineTask = new Deadline(description, deadline);
                     tasks.add(deadlineTask);
                     storage.save(tasks);
-                    printTaskAdded(deadlineTask, tasks.size(), line);
+                    ui.showTaskAdded(deadlineTask, tasks.size());
                     continue;
                 }
 
@@ -165,19 +138,17 @@ public class Zikiai {
                     Task event = new Event(description, from, to);
                     tasks.add(event);
                     storage.save(tasks);
-                    printTaskAdded(event, tasks.size(), line);
+                    ui.showTaskAdded(event, tasks.size());
                     continue;
                 }
                 throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
             } catch (ZikiaiException e) {
-                printError(e, line);
+                ui.showError(e);
             }
         }
 
-        System.out.println(line);
-        System.out.println("okay, bai bai");
-        System.out.println(line);
-        scanner.close();
+        ui.showGoodbye();
+        ui.close();
     }
 
     /**
@@ -220,21 +191,6 @@ public class Zikiai {
     }
 
     /**
-     * Prints the confirmation shown after a task is added.
-     *
-     * @param task task that was added
-     * @param taskCount current number of stored tasks
-     * @param line separator used by the text interface
-     */
-    private static void printTaskAdded(Task task, int taskCount, String line) {
-        System.out.println(line);
-        System.out.println("Got it. I've added this task:");
-        System.out.println("    " + task.getDescription());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(line);
-    }
-
-    /**
      * Rejects the field separator because it would make saved data ambiguous.
      *
      * @param values task fields that will be written to storage
@@ -248,15 +204,4 @@ public class Zikiai {
         }
     }
 
-    /**
-     * Prints a user-facing chatbot error.
-     *
-     * @param exception error to display
-     * @param line separator used by the text interface
-     */
-    private static void printError(ZikiaiException exception, String line) {
-        System.out.println(line);
-        System.out.println("OOPSSSIES!!! " + exception.getMessage());
-        System.out.println(line);
-    }
 }
