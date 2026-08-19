@@ -26,8 +26,8 @@ python3 .agents/skills/test-ui/scripts/run_ui_tests.py
 
 The runner must:
 
-1. Compile all `src/main/java/*.java` files into a temporary directory.
-2. Start a fresh `Zikiai` process for every test case.
+1. Compile all Java files recursively below `src/main/java` into a temporary directory.
+2. Start a fresh `zikiai.Zikiai` process for every test case.
 3. Send the case's input commands to standard input in order.
 4. Print a record of the console input and actual output.
 5. Compare actual output with the expanded expected output exactly, except for newline style and trailing final newlines.

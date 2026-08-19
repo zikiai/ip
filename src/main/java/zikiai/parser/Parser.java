@@ -1,5 +1,12 @@
+package zikiai.parser;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
+import zikiai.exception.ZikiaiException;
+import zikiai.task.Deadline;
+import zikiai.task.Event;
+import zikiai.task.Todo;
 
 /**
  * Recognizes commands and converts their text into validated values and tasks.

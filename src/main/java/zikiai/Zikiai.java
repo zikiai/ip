@@ -1,3 +1,12 @@
+package zikiai;
+
+import zikiai.exception.ZikiaiException;
+import zikiai.parser.Parser;
+import zikiai.storage.Storage;
+import zikiai.task.Task;
+import zikiai.task.TaskList;
+import zikiai.ui.Ui;
+
 /**
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
  */

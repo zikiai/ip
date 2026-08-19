@@ -1,4 +1,10 @@
+package zikiai.ui;
+
 import java.util.Scanner;
+
+import zikiai.exception.ZikiaiException;
+import zikiai.task.Task;
+import zikiai.task.TaskList;
 
 /**
  * Handles all console input and output for Zikiai.

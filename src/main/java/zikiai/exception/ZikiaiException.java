@@ -1,3 +1,5 @@
+package zikiai.exception;
+
 /**
  * Represents an error that Zikiai can explain to the user.
  */
