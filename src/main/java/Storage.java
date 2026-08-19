@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +93,11 @@ public class Storage {
         if (taskType == 'T') {
             task = new Todo(parts[1]);
         } else if (taskType == 'D') {
-            task = new Deadline(parts[1], parts[2]);
+            try {
+                task = new Deadline(parts[1], LocalDate.parse(parts[2]));
+            } catch (DateTimeParseException e) {
+                throw invalidDataLine(lineNumber);
+            }
         } else {
             task = new Event(parts[1], parts[2], parts[3]);
         }

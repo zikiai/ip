@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -122,11 +124,12 @@ public class Zikiai {
                     }
 
                     String description = details.substring(0, byIndex).trim();
-                    String deadline = details.substring(byIndex + 3).trim();
-                    if (description.isEmpty() || deadline.isEmpty()) {
+                    String deadlineText = details.substring(byIndex + 3).trim();
+                    if (description.isEmpty() || deadlineText.isEmpty()) {
                         throw new ZikiaiException("Please provide both a task and a deadline.");
                     }
-                    validateStorageText(description, deadline);
+                    validateStorageText(description, deadlineText);
+                    LocalDate deadline = parseDeadline(deadlineText);
 
                     Task deadlineTask = new Deadline(description, deadline);
                     tasks.add(deadlineTask);
@@ -198,6 +201,22 @@ public class Zikiai {
             throw new ZikiaiException("That task number does not exist.");
         }
         return taskIndex;
+    }
+
+    /**
+     * Parses a deadline written in the ISO yyyy-MM-dd format.
+     *
+     * @param deadlineText deadline supplied by the user
+     * @return parsed deadline date
+     * @throws ZikiaiException if the text is not a valid ISO date
+     */
+    private static LocalDate parseDeadline(String deadlineText) throws ZikiaiException {
+        try {
+            return LocalDate.parse(deadlineText);
+        } catch (DateTimeParseException e) {
+            throw new ZikiaiException(
+                    "Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.", e);
+        }
     }
 
     /**
