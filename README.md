@@ -23,3 +23,34 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Creating an executable JAR
+
+Zikiai uses the Shadow plugin to create a self-contained JAR containing the
+application and its runtime dependencies.
+
+From the project root, build the JAR using:
+
+```bash
+./gradlew clean shadowJar
+```
+
+On Windows, use `gradlew.bat clean shadowJar` instead. The generated JAR is:
+
+```text
+build/libs/zikiai.jar
+```
+
+To run the JAR as a distributed application:
+
+1. Copy `zikiai.jar` into an empty folder.
+2. Open a terminal in that folder.
+3. Run the following command using JDK 25:
+
+   ```bash
+   java -jar "zikiai.jar"
+   ```
+
+Zikiai creates its `data` folder relative to the folder from which the JAR is
+run. Do not commit the generated JAR or the `build` folder to Git. For a GitHub
+release, attach `build/libs/zikiai.jar` as the release binary instead.
