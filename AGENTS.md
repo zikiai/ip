@@ -32,9 +32,11 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 
 After every update to the project code:
 
-1. Review `test/ui-test-plan.md` and update it when the change adds or modifies commands, output, error handling, or other console-visible behavior.
-2. Invoke the project-specific `test-ui` skill and run the complete UI test plan, even when no test-plan changes were needed.
-3. Follow the skill's fail-fast behavior: stop at the first failure and report the actual and expected output. Do not claim that the code update is complete until the relevant tests pass, unless the user explicitly asks to leave a known failure unresolved.
+1. Maintain JUnit tests for approximately the top 50% highest-value methods in the codebase, prioritizing complex, core, and critical business logic. After each code change, review the affected methods and add or update JUnit tests as needed to continue meeting that target.
+2. Run the complete JUnit test suite using Gradle.
+3. Review `test/ui-test-plan.md` and update it when the change adds or modifies commands, output, error handling, or other console-visible behavior.
+4. Invoke the project-specific `test-ui` skill and run the complete UI test plan, even when no test-plan changes were needed.
+5. Follow the skill's fail-fast behavior: stop at the first failure and report the actual and expected output. Do not claim that the code update is complete until the relevant tests pass, unless the user explicitly asks to leave a known failure unresolved.
 
 ## Git
 
