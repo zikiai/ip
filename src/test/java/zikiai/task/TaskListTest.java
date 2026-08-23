@@ -97,4 +97,40 @@ class TaskListTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(0));
     }
+
+    @Test
+    void find_keywordInMultipleDescriptions_matchingTasksReturnedInOrder() {
+        Task first = new Todo("read book");
+        Task second = new Todo("return book");
+        Task third = new Todo("attend meeting");
+        TaskList tasks = new TaskList(List.of(first, second, third));
+
+        TaskList matches = tasks.find("book");
+
+        assertEquals(2, matches.size());
+        assertSame(first, matches.get(0));
+        assertSame(second, matches.get(1));
+    }
+
+    @Test
+    void find_keywordAbsent_emptyTaskListReturned() {
+        TaskList tasks = new TaskList(List.of(new Todo("read book")));
+
+        TaskList matches = tasks.find("meeting");
+
+        assertEquals(0, matches.size());
+    }
+
+    @Test
+    void find_validKeyword_originalTaskListUnchanged() {
+        Task first = new Todo("read book");
+        Task second = new Todo("attend meeting");
+        TaskList tasks = new TaskList(List.of(first, second));
+
+        tasks.find("book");
+
+        assertEquals(2, tasks.size());
+        assertSame(first, tasks.get(0));
+        assertSame(second, tasks.get(1));
+    }
 }
