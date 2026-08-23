@@ -24,12 +24,22 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    /**
+     * Returns this deadline with its type, completion status, and due date.
+     *
+     * @return formatted deadline for display
+     */
     @Override
     public String getDescription() {
         return "[D]" + super.getDescription()
                 + " (by: " + deadline.format(DISPLAY_FORMAT) + ")";
     }
 
+    /**
+     * Returns this deadline in the format used by the data file.
+     *
+     * @return storage representation of this deadline
+     */
     @Override
     public String toDataString() {
         return "[D][" + getStatusIcon() + "] | " + getDescriptionText() + " | " + deadline;

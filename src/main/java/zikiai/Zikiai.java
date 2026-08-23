@@ -11,6 +11,18 @@ import zikiai.ui.Ui;
  * Runs the Zikiai chatbot and responds to task commands entered by the user.
  */
 public class Zikiai {
+
+    /**
+     * Prevents this application entry-point class from being instantiated.
+     */
+    private Zikiai() {
+    }
+
+    /**
+     * Starts Zikiai, loads saved tasks, and processes commands until the user exits.
+     *
+     * @param args command-line arguments; currently unused
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Parser parser = new Parser();

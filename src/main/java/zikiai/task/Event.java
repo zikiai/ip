@@ -20,12 +20,22 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /**
+     * Returns this event with its type, completion status, and time range.
+     *
+     * @return formatted event for display
+     */
     @Override
     public String getDescription() {
         return "[E]" + super.getDescription()
                 + " (from: " + from + " to: " + to + ")";
     }
 
+    /**
+     * Returns this event in the format used by the data file.
+     *
+     * @return storage representation of this event
+     */
     @Override
     public String toDataString() {
         return "[E][" + getStatusIcon() + "] | " + getDescriptionText()

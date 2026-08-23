@@ -14,11 +14,21 @@ public class Todo extends Task {
         super(description);
     }
 
+    /**
+     * Returns this todo with its type and completion status.
+     *
+     * @return formatted todo for display
+     */
     @Override
     public String getDescription() {
         return "[T]" + super.getDescription();
     }
 
+    /**
+     * Returns this todo in the format used by the data file.
+     *
+     * @return storage representation of this todo
+     */
     @Override
     public String toDataString() {
         return "[T][" + getStatusIcon() + "] | " + getDescriptionText();

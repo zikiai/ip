@@ -23,6 +23,12 @@ public class Storage {
     private static final Path FILE_PATH = Path.of("data", "zikiai.txt");
 
     /**
+     * Creates storage that reads and writes Zikiai's default data file.
+     */
+    public Storage() {
+    }
+
+    /**
      * Writes the complete task list to the data file, replacing its old contents.
      *
      * @param tasks task list to save
