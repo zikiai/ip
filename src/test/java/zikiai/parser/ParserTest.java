@@ -52,6 +52,27 @@ class ParserTest {
     }
 
     @Test
+    void parseFindKeyword_validCommand_trimmedKeywordReturned() throws ZikiaiException {
+        assertEquals("return book", parser.parseFindKeyword("find   return book   "));
+    }
+
+    @Test
+    void parseFindKeyword_emptyCommand_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseFindKeyword("find"));
+
+        assertEquals("Please enter a keyword to find.", exception.getMessage());
+    }
+
+    @Test
+    void parseFindKeyword_whitespaceOnly_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseFindKeyword("find   "));
+
+        assertEquals("Please enter a keyword to find.", exception.getMessage());
+    }
+
+    @Test
     void parseTodo_validCommand_trimmedTodoReturned() throws ZikiaiException {
         Todo todo = parser.parseTodo("todo    read book   ");
 

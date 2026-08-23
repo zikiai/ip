@@ -64,6 +64,16 @@ public class Parser {
     }
 
     /**
+     * Returns whether the input begins a find command.
+     *
+     * @param input complete user input.
+     * @return true for a find command, including an empty one.
+     */
+    public boolean isFindCommand(String input) {
+        return input.equals("find") || input.startsWith("find ");
+    }
+
+    /**
      * Returns whether the input begins a todo command.
      *
      * @param input complete user input
@@ -115,6 +125,21 @@ public class Parser {
             throw new ZikiaiException("That task number does not exist.");
         }
         return taskIndex;
+    }
+
+    /**
+     * Extracts and validates the keyword in a find command.
+     *
+     * @param input complete find command.
+     * @return keyword to search for.
+     * @throws ZikiaiException if the keyword is empty.
+     */
+    public String parseFindKeyword(String input) throws ZikiaiException {
+        String keyword = input.substring(4).trim();
+        if (keyword.isEmpty()) {
+            throw new ZikiaiException("Please enter a keyword to find.");
+        }
+        return keyword;
     }
 
     /**

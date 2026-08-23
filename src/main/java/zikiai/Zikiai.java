@@ -67,6 +67,13 @@ public class Zikiai {
                     continue;
                 }
 
+                if (parser.isFindCommand(input)) {
+                    String keyword = parser.parseFindKeyword(input);
+                    TaskList matchingTasks = tasks.find(keyword);
+                    ui.showMatchingTasks(matchingTasks);
+                    continue;
+                }
+
                 if (parser.isTodoCommand(input)) {
                     Task todo = parser.parseTodo(input);
                     tasks.add(todo);

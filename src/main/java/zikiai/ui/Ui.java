@@ -108,6 +108,26 @@ public class Ui {
     }
 
     /**
+     * Displays tasks whose descriptions match a find command, or reports no matches.
+     *
+     * @param matchingTasks matching tasks to display.
+     */
+    public void showMatchingTasks(TaskList matchingTasks) {
+        System.out.println(SEPARATOR);
+        if (matchingTasks.size() == 0) {
+            System.out.println("There are none!");
+            System.out.println(SEPARATOR);
+            return;
+        }
+
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + "." + matchingTasks.get(i).getDescription());
+        }
+        System.out.println(SEPARATOR);
+    }
+
+    /**
      * Displays confirmation that a task was added.
      *
      * @param task task that was added

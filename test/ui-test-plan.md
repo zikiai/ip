@@ -935,3 +935,101 @@ OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
 ```text
 [D][ ] | impossible task | 2025-02-29
 ```
+
+## TC-21 Find matching tasks across task types
+
+**Aim:** Verify that find searches task descriptions, preserves the original order and status, and excludes non-matching tasks.
+
+### Initial data file
+
+```text
+[T][X] | read book
+[D][ ] | return book | 2026-08-23
+[E][ ] | project meeting | Mon 2pm | 4pm
+```
+
+### Input
+
+```text
+find book
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the matching tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Aug 23 2026)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][X] | read book
+[D][ ] | return book | 2026-08-23
+[E][ ] | project meeting | Mon 2pm | 4pm
+```
+
+## TC-22 Interleave invalid, empty, and successful searches
+
+**Aim:** Verify that empty and unsuccessful searches do not alter task state, while a later valid search still returns the expected task.
+
+### Input
+
+```text
+todo keep me
+find
+find missing
+find keep
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Please enter a keyword to find.
+{{SEPARATOR}}
+{{SEPARATOR}}
+There are none!
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the matching tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | keep me
+```
