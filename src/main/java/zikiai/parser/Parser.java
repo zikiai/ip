@@ -14,6 +14,12 @@ import zikiai.task.Todo;
 public class Parser {
 
     /**
+     * Creates a parser for recognizing and validating Zikiai commands.
+     */
+    public Parser() {
+    }
+
+    /**
      * Returns whether the user wants to exit.
      *
      * @param input complete user input
