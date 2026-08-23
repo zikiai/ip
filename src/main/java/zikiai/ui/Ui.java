@@ -40,7 +40,7 @@ public class Ui {
     /**
      * Returns whether another command is available from the user.
      *
-     * @return true when another input line can be read
+     * @return true when another input line can be read.
      */
     public boolean hasNextCommand() {
         return scanner.hasNextLine();
@@ -49,7 +49,7 @@ public class Ui {
     /**
      * Reads the next command entered by the user.
      *
-     * @return next complete input line
+     * @return next complete input line.
      */
     public String readCommand() {
         return scanner.nextLine();
@@ -58,7 +58,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as done.
      *
-     * @param task task whose status changed
+     * @param task task whose status changed.
      */
     public void showTaskMarked(Task task) {
         System.out.println(SEPARATOR);
@@ -70,7 +70,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as not done.
      *
-     * @param task task whose status changed
+     * @param task task whose status changed.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println(SEPARATOR);
@@ -82,8 +82,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was removed.
      *
-     * @param task task that was removed
-     * @param taskCount number of remaining tasks
+     * @param task task that was removed.
+     * @param taskCount number of remaining tasks.
      */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println(SEPARATOR);
@@ -96,7 +96,7 @@ public class Ui {
     /**
      * Displays every task using one-based numbering.
      *
-     * @param tasks task list to display
+     * @param tasks task list to display.
      */
     public void showTaskList(TaskList tasks) {
         System.out.println(SEPARATOR);
@@ -110,8 +110,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was added.
      *
-     * @param task task that was added
-     * @param taskCount current number of tasks
+     * @param task task that was added.
+     * @param taskCount current number of tasks.
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println(SEPARATOR);
@@ -124,7 +124,7 @@ public class Ui {
     /**
      * Displays a user-facing error message.
      *
-     * @param exception error to display
+     * @param exception error to display.
      */
     public void showError(ZikiaiException exception) {
         System.out.println(SEPARATOR);

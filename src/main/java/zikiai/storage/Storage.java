@@ -23,10 +23,16 @@ public class Storage {
     private static final Path FILE_PATH = Path.of("data", "zikiai.txt");
 
     /**
+     * Creates storage that reads and writes Zikiai's default data file.
+     */
+    public Storage() {
+    }
+
+    /**
      * Writes the complete task list to the data file, replacing its old contents.
      *
-     * @param tasks task list to save
-     * @throws ZikiaiException if the directory or file cannot be written
+     * @param tasks task list to save.
+     * @throws ZikiaiException if the directory or file cannot be written.
      */
     public void save(TaskList tasks) throws ZikiaiException {
         try {
@@ -37,16 +43,17 @@ public class Storage {
                 lines.add(tasks.get(i).toDataString());
             }
             Files.write(FILE_PATH, lines, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new ZikiaiException("I couldn't save your tasks to the data file.", e);
+        } catch (IOException exception) {
+            throw new ZikiaiException(
+                    "I couldn't save your tasks to the data file.", exception);
         }
     }
 
     /**
      * Loads tasks from the data file. A missing file represents an empty task list.
      *
-     * @return tasks reconstructed from the data file
-     * @throws ZikiaiException if the file cannot be read or contains invalid data
+     * @return tasks reconstructed from the data file.
+     * @throws ZikiaiException if the file cannot be read or contains invalid data.
      */
     public List<Task> load() throws ZikiaiException {
         List<Task> tasks = new ArrayList<>();
@@ -57,8 +64,8 @@ public class Storage {
         List<String> lines;
         try {
             lines = Files.readAllLines(FILE_PATH, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new ZikiaiException("I couldn't read your saved tasks.", e);
+        } catch (IOException exception) {
+            throw new ZikiaiException("I couldn't read your saved tasks.", exception);
         }
 
         for (int i = 0; i < lines.size(); i++) {
@@ -74,10 +81,10 @@ public class Storage {
     /**
      * Converts one validated data-file line into its corresponding task type.
      *
-     * @param line line to parse
-     * @param lineNumber one-based line number used in error messages
-     * @return reconstructed task
-     * @throws ZikiaiException if the line does not match the storage format
+     * @param line line to parse.
+     * @param lineNumber one-based line number used in error messages.
+     * @return reconstructed task.
+     * @throws ZikiaiException if the line does not match the storage format.
      */
     private Task parseTask(String line, int lineNumber) throws ZikiaiException {
         String[] parts = line.split("\\s*\\|\\s*", -1);
@@ -104,7 +111,7 @@ public class Storage {
         } else if (taskType == 'D') {
             try {
                 task = new Deadline(parts[1], LocalDate.parse(parts[2]));
-            } catch (DateTimeParseException e) {
+            } catch (DateTimeParseException exception) {
                 throw invalidDataLine(lineNumber);
             }
         } else {
@@ -120,8 +127,8 @@ public class Storage {
     /**
      * Creates a consistent error for malformed saved data.
      *
-     * @param lineNumber one-based line number containing invalid data
-     * @return exception describing the corrupt line
+     * @param lineNumber one-based line number containing invalid data.
+     * @return exception describing the corrupt line.
      */
     private ZikiaiException invalidDataLine(int lineNumber) {
         return new ZikiaiException(
