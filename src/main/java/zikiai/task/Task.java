@@ -10,7 +10,7 @@ public class Task {
     /**
      * Creates an incomplete task with the given description.
      *
-     * @param description description of the task
+     * @param description description of the task.
      */
     public Task(String description) {
         this.description = description;
@@ -20,7 +20,7 @@ public class Task {
     /**
      * Returns the icon that represents the task's completion status.
      *
-     * @return {@code X} when done, or a space when not done
+     * @return {@code X} when done, or a space when not done.
      */
     public String getStatusIcon() {
         return isDone ? "X" : " ";
@@ -43,7 +43,7 @@ public class Task {
     /**
      * Returns the task description together with its completion status.
      *
-     * @return formatted task, such as {@code [X] read book}
+     * @return formatted task, such as {@code [X] read book}.
      */
     public String getDescription() {
         return "[" + getStatusIcon() + "] " + description;
@@ -52,7 +52,7 @@ public class Task {
     /**
      * Returns the unformatted text used to describe this task.
      *
-     * @return raw task description
+     * @return raw task description.
      */
     protected String getDescriptionText() {
         return description;
@@ -62,7 +62,7 @@ public class Task {
      * Returns this task in the format used by the data file.
      * Subclasses override this method to include their task type and details.
      *
-     * @return storage representation of this task
+     * @return storage representation of this task.
      */
     public String toDataString() {
         return "[?][" + getStatusIcon() + "] | " + description;

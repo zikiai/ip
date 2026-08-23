@@ -16,8 +16,8 @@ public class Deadline extends Task {
     /**
      * Creates an incomplete deadline task.
      *
-     * @param description description of the task
-     * @param deadline deadline date for the task
+     * @param description description of the task.
+     * @param deadline deadline date for the task.
      */
     public Deadline(String description, LocalDate deadline) {
         super(description);

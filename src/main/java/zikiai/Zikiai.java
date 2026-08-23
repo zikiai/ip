@@ -21,7 +21,7 @@ public class Zikiai {
     /**
      * Starts Zikiai, loads saved tasks, and processes commands until the user exits.
      *
-     * @param args command-line arguments; currently unused
+     * @param args Command-line arguments; currently unused.
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
@@ -32,8 +32,8 @@ public class Zikiai {
         TaskList tasks;
         try {
             tasks = new TaskList(storage.load());
-        } catch (ZikiaiException e) {
-            ui.showError(e);
+        } catch (ZikiaiException exception) {
+            ui.showError(exception);
             ui.close();
             return;
         }
@@ -103,8 +103,8 @@ public class Zikiai {
                     continue;
                 }
                 throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
-            } catch (ZikiaiException e) {
-                ui.showError(e);
+            } catch (ZikiaiException exception) {
+                ui.showError(exception);
             }
         }
 

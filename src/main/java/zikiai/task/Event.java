@@ -10,9 +10,9 @@ public class Event extends Task {
     /**
      * Creates an incomplete event task.
      *
-     * @param description description of the event
-     * @param from start time of the event
-     * @param to end time of the event
+     * @param description description of the event.
+     * @param from start time of the event.
+     * @param to end time of the event.
      */
     public Event(String description, String from, String to) {
         super(description);
