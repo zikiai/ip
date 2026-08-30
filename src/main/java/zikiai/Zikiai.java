@@ -8,115 +8,134 @@ import zikiai.task.TaskList;
 import zikiai.ui.Ui;
 
 /**
- * Runs the Zikiai chatbot and responds to task commands entered by the user.
+ * Processes commands for both the console and the graphical chatbot.
  */
 public class Zikiai {
+    private final Storage storage;
+    private final Parser parser = new Parser();
+    private TaskList tasks;
+    private String loadingError;
+    private boolean isExit;
 
     /**
-     * Prevents this application entry-point class from being instantiated.
+     * Creates a chatbot using the default task file.
      */
-    private Zikiai() {
+    public Zikiai() {
+        this(new Storage());
     }
 
     /**
-     * Starts Zikiai, loads saved tasks, and processes commands until the user exits.
+     * Loads a chatbot session from the supplied storage.
+     * A failed load blocks commands to protect the existing file.
      *
-     * @param args Command-line arguments; currently unused.
+     * @param storage storage used by this session.
      */
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Parser parser = new Parser();
-        ui.showWelcome();
-
-        Storage storage = new Storage();
-        TaskList tasks;
+    public Zikiai(Storage storage) {
+        this.storage = storage;
         try {
             tasks = new TaskList(storage.load());
         } catch (ZikiaiException exception) {
-            ui.showError(exception);
+            loadingError = Ui.formatError(exception);
+        }
+    }
+
+    /**
+     * Returns the initial greeting or a loading error.
+     */
+    public String getWelcome() {
+        return loadingError == null ? Ui.getGreeting() : loadingError;
+    }
+
+    /**
+     * Returns whether this session can accept another command.
+     */
+    public boolean canAcceptCommands() {
+        return loadingError == null && !isExit;
+    }
+
+    /**
+     * Processes one command and returns its reply without reading or printing console text.
+     *
+     * @param input complete command entered by the user.
+     * @return confirmation, task list, or user-facing error.
+     */
+    public String getResponse(String input) {
+        if (loadingError != null) {
+            return loadingError;
+        }
+        if (isExit) {
+            return Ui.formatGoodbye();
+        }
+        if (parser.isByeCommand(input)) {
+            isExit = true;
+            return Ui.formatGoodbye();
+        }
+        try {
+            if (parser.isMarkCommand(input)) {
+                Task task = tasks.markAsDone(parser.parseTaskIndex(input, tasks.size()));
+                storage.save(tasks);
+                return Ui.formatTaskMarked(task);
+            }
+            if (parser.isUnmarkCommand(input)) {
+                Task task = tasks.markAsNotDone(parser.parseTaskIndex(input, tasks.size()));
+                storage.save(tasks);
+                return Ui.formatTaskUnmarked(task);
+            }
+            if (parser.isDeleteCommand(input)) {
+                Task task = tasks.delete(parser.parseTaskIndex(input, tasks.size()));
+                storage.save(tasks);
+                return Ui.formatTaskDeleted(task, tasks.size());
+            }
+            if (parser.isListCommand(input)) {
+                return Ui.formatTaskList(tasks);
+            }
+            if (parser.isFindCommand(input)) {
+                return Ui.formatMatchingTasks(tasks.find(parser.parseFindKeyword(input)));
+            }
+            if (parser.isTodoCommand(input)) {
+                return addTask(parser.parseTodo(input));
+            }
+            if (parser.isDeadlineCommand(input)) {
+                return addTask(parser.parseDeadline(input));
+            }
+            if (parser.isEventCommand(input)) {
+                return addTask(parser.parseEvent(input));
+            }
+            throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
+        } catch (ZikiaiException exception) {
+            return Ui.formatError(exception);
+        }
+    }
+
+    /**
+     * Adds and saves a validated task before reporting success.
+     */
+    private String addTask(Task task) throws ZikiaiException {
+        tasks.add(task);
+        storage.save(tasks);
+        return Ui.formatTaskAdded(task, tasks.size());
+    }
+
+    /**
+     * Runs the optional console interface used by the console regression tests.
+     *
+     * @param args command-line arguments; currently unused.
+     */
+    public static void main(String[] args) {
+        Ui ui = new Ui();
+        ui.showWelcome();
+        Zikiai zikiai = new Zikiai();
+        if (!zikiai.canAcceptCommands()) {
+            ui.showResponse(zikiai.getWelcome());
             ui.close();
             return;
         }
-
-        while (ui.hasNextCommand()) {
-            String input = ui.readCommand();
-            if (parser.isByeCommand(input)) {
-                break;
-            }
-
-            try {
-                if (parser.isMarkCommand(input)) {
-                    int taskIndex = parser.parseTaskIndex(input, tasks.size());
-
-                    Task task = tasks.markAsDone(taskIndex);
-                    storage.save(tasks);
-
-                    ui.showTaskMarked(task);
-                    continue;
-                }
-
-                if (parser.isUnmarkCommand(input)) {
-                    int taskIndex = parser.parseTaskIndex(input, tasks.size());
-
-                    Task task = tasks.markAsNotDone(taskIndex);
-                    storage.save(tasks);
-
-                    ui.showTaskUnmarked(task);
-                    continue;
-                }
-
-                if (parser.isDeleteCommand(input)) {
-                    int taskIndex = parser.parseTaskIndex(input, tasks.size());
-                    Task deletedTask = tasks.delete(taskIndex);
-                    storage.save(tasks);
-
-                    ui.showTaskDeleted(deletedTask, tasks.size());
-                    continue;
-                }
-
-                if (parser.isListCommand(input)) {
-                    ui.showTaskList(tasks);
-                    continue;
-                }
-
-                if (parser.isFindCommand(input)) {
-                    String keyword = parser.parseFindKeyword(input);
-                    TaskList matchingTasks = tasks.find(keyword);
-                    ui.showMatchingTasks(matchingTasks);
-                    continue;
-                }
-
-                if (parser.isTodoCommand(input)) {
-                    Task todo = parser.parseTodo(input);
-                    tasks.add(todo);
-                    storage.save(tasks);
-                    ui.showTaskAdded(todo, tasks.size());
-                    continue;
-                }
-
-                if (parser.isDeadlineCommand(input)) {
-                    Task deadlineTask = parser.parseDeadline(input);
-                    tasks.add(deadlineTask);
-                    storage.save(tasks);
-                    ui.showTaskAdded(deadlineTask, tasks.size());
-                    continue;
-                }
-
-                if (parser.isEventCommand(input)) {
-                    Task event = parser.parseEvent(input);
-                    tasks.add(event);
-                    storage.save(tasks);
-                    ui.showTaskAdded(event, tasks.size());
-                    continue;
-                }
-                throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
-            } catch (ZikiaiException exception) {
-                ui.showError(exception);
-            }
+        while (zikiai.canAcceptCommands() && ui.hasNextCommand()) {
+            ui.showResponse(zikiai.getResponse(ui.readCommand()));
         }
-
-        ui.showGoodbye();
+        if (zikiai.canAcceptCommands()) {
+            ui.showResponse(Ui.formatGoodbye());
+        }
         ui.close();
     }
-
 }

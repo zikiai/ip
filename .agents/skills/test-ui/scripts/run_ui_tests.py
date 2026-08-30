@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import os
 import re
 import subprocess
 import sys
@@ -98,8 +99,20 @@ def compile_project(repo_root: Path, output_dir: Path) -> None:
     sources = sorted((repo_root / "src/main/java").rglob("*.java"))
     if not sources:
         raise RuntimeError("No Java source files found in src/main/java")
+    wrapper = "gradlew.bat" if os.name == "nt" else "./gradlew"
+    dependencies = subprocess.run(
+        [wrapper, "-q", "printCompileClasspath", "--console=plain"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+    if dependencies.returncode != 0:
+        raise RuntimeError(f"Dependency resolution failed:\n{dependencies.stdout}{dependencies.stderr}")
     result = subprocess.run(
-        ["javac", "-Xlint:all", "-d", str(output_dir), *map(str, sources)],
+        ["javac", "-Xlint:all", "-cp", dependencies.stdout.strip(),
+         "-d", str(output_dir), *map(str, sources)],
         cwd=repo_root,
         capture_output=True,
         text=True,

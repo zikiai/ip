@@ -20,12 +20,22 @@ import zikiai.task.Todo;
  * Loads and saves the chatbot's tasks using a local data file.
  */
 public class Storage {
-    private static final Path FILE_PATH = Path.of("data", "zikiai.txt");
+    private final Path filePath;
 
     /**
      * Creates storage that reads and writes Zikiai's default data file.
      */
     public Storage() {
+        this(Path.of("data", "zikiai.txt"));
+    }
+
+    /**
+     * Creates storage for a chosen file, allowing tests to use temporary data.
+     *
+     * @param filePath location of the task file.
+     */
+    public Storage(Path filePath) {
+        this.filePath = filePath.toAbsolutePath();
     }
 
     /**
@@ -36,13 +46,13 @@ public class Storage {
      */
     public void save(TaskList tasks) throws ZikiaiException {
         try {
-            Files.createDirectories(FILE_PATH.getParent());
+            Files.createDirectories(filePath.getParent());
 
             List<String> lines = new ArrayList<>();
             for (int i = 0; i < tasks.size(); i++) {
                 lines.add(tasks.get(i).toDataString());
             }
-            Files.write(FILE_PATH, lines, StandardCharsets.UTF_8);
+            Files.write(filePath, lines, StandardCharsets.UTF_8);
         } catch (IOException exception) {
             throw new ZikiaiException(
                     "I couldn't save your tasks to the data file.", exception);
@@ -57,13 +67,13 @@ public class Storage {
      */
     public List<Task> load() throws ZikiaiException {
         List<Task> tasks = new ArrayList<>();
-        if (!Files.exists(FILE_PATH)) {
+        if (!Files.exists(filePath)) {
             return tasks;
         }
 
         List<String> lines;
         try {
-            lines = Files.readAllLines(FILE_PATH, StandardCharsets.UTF_8);
+            lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
         } catch (IOException exception) {
             throw new ZikiaiException("I couldn't read your saved tasks.", exception);
         }
