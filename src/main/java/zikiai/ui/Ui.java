@@ -7,7 +7,7 @@ import zikiai.task.Task;
 import zikiai.task.TaskList;
 
 /**
- * Handles all console input and output for Zikiai.
+ * Formats shared chatbot responses and handles optional console input and output.
  */
 public class Ui {
     private static final String SEPARATOR = "_".repeat(60);
@@ -32,8 +32,7 @@ public class Ui {
     public void showWelcome() {
         System.out.println(SEPARATOR);
         System.out.println(BANNER);
-        System.out.println("Hello! I'm Zikiai.");
-        System.out.println("What can I do for you?");
+        System.out.println(getGreeting());
         System.out.println(SEPARATOR);
     }
 
@@ -56,108 +55,105 @@ public class Ui {
     }
 
     /**
-     * Displays confirmation that a task was marked as done.
+     * Formats confirmation that a task was marked as done.
      *
      * @param task task whose status changed.
      */
-    public void showTaskMarked(Task task) {
-        System.out.println(SEPARATOR);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("    " + task.getDescription());
-        System.out.println(SEPARATOR);
+    public static String formatTaskMarked(Task task) {
+        return "Nice! I've marked this task as done:\n    " + task.getDescription();
     }
 
     /**
-     * Displays confirmation that a task was marked as not done.
+     * Formats confirmation that a task was marked as not done.
      *
      * @param task task whose status changed.
      */
-    public void showTaskUnmarked(Task task) {
-        System.out.println(SEPARATOR);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("    " + task.getDescription());
-        System.out.println(SEPARATOR);
+    public static String formatTaskUnmarked(Task task) {
+        return "OK, I've marked this task as not done yet:\n    " + task.getDescription();
     }
 
     /**
-     * Displays confirmation that a task was removed.
+     * Formats confirmation that a task was removed.
      *
      * @param task task that was removed.
      * @param taskCount number of remaining tasks.
      */
-    public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println(SEPARATOR);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("    " + task.getDescription());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(SEPARATOR);
+    public static String formatTaskDeleted(Task task, int taskCount) {
+        return "Noted. I've removed this task:\n    " + task.getDescription()
+                + "\nNow you have " + taskCount + " tasks in the list.";
     }
 
     /**
-     * Displays every task using one-based numbering.
+     * Formats every task using one-based numbering.
      *
      * @param tasks task list to display.
      */
-    public void showTaskList(TaskList tasks) {
-        System.out.println(SEPARATOR);
-        System.out.println("Here are the tasks in your list:");
+    public static String formatTaskList(TaskList tasks) {
+        StringBuilder response = new StringBuilder("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i).getDescription());
+            response.append("\n").append(i + 1).append(".").append(tasks.get(i).getDescription());
         }
-        System.out.println(SEPARATOR);
+        return response.toString();
     }
 
     /**
-     * Displays tasks whose descriptions match a find command, or reports no matches.
+     * Formats tasks whose descriptions match a find command, or reports no matches.
      *
      * @param matchingTasks matching tasks to display.
      */
-    public void showMatchingTasks(TaskList matchingTasks) {
-        System.out.println(SEPARATOR);
+    public static String formatMatchingTasks(TaskList matchingTasks) {
         if (matchingTasks.size() == 0) {
-            System.out.println("There are none!");
-            System.out.println(SEPARATOR);
-            return;
+            return "There are none!";
         }
-
-        System.out.println("Here are the matching tasks in your list:");
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + "." + matchingTasks.get(i).getDescription());
+            response.append("\n").append(i + 1).append(".").append(matchingTasks.get(i).getDescription());
         }
-        System.out.println(SEPARATOR);
+        return response.toString();
     }
 
     /**
-     * Displays confirmation that a task was added.
+     * Formats confirmation that a task was added.
      *
      * @param task task that was added.
      * @param taskCount current number of tasks.
      */
-    public void showTaskAdded(Task task, int taskCount) {
-        System.out.println(SEPARATOR);
-        System.out.println("Got it. I've added this task:");
-        System.out.println("    " + task.getDescription());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(SEPARATOR);
+    public static String formatTaskAdded(Task task, int taskCount) {
+        return "Got it. I've added this task:\n    " + task.getDescription()
+                + "\nNow you have " + taskCount + " tasks in the list.";
     }
 
     /**
-     * Displays a user-facing error message.
+     * Formats a user-facing error message.
      *
      * @param exception error to display.
      */
-    public void showError(ZikiaiException exception) {
-        System.out.println(SEPARATOR);
-        System.out.println("OOPSSSIES!!! " + exception.getMessage());
-        System.out.println(SEPARATOR);
+    public static String formatError(ZikiaiException exception) {
+        return "OOPSSSIES!!! " + exception.getMessage();
     }
 
     /**
-     * Displays the chatbot's farewell message.
+     * Formats the chatbot's farewell message.
      */
-    public void showGoodbye() {
+    public static String formatGoodbye() {
+        return "okay, bai bai";
+    }
+
+    /**
+     * Returns the greeting shared by console and graphical interfaces.
+     */
+    public static String getGreeting() {
+        return "Hello! I'm Zikiai.\nWhat can I do for you?";
+    }
+
+    /**
+     * Displays one response between console separators.
+     *
+     * @param response message from the chatbot.
+     */
+    public void showResponse(String response) {
         System.out.println(SEPARATOR);
-        System.out.println("okay, bai bai");
+        System.out.println(response);
         System.out.println(SEPARATOR);
     }
 

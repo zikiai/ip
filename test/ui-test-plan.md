@@ -1,5 +1,11 @@
 # Zikiai UI Test Plan
 
+The cases below continue to test the console entry point `zikiai.Zikiai`, which
+uses the same command-response handler as the GUI. The runner resolves JavaFX
+compile dependencies through Gradle, then compiles into its temporary directory.
+Console output and all existing expected results remain unchanged for Level 10.
+GUI-specific behavior and smoke tests are documented in `test/gui-test-plan.md`.
+
 The UI test runner starts a fresh chatbot process for each case. Commands are supplied in order, one per line. Expected output is matched exactly after expanding these placeholders:
 
 - `{{SEPARATOR}}`: 60 underscore characters

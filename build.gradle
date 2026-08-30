@@ -28,6 +28,16 @@ tasks.withType(Checkstyle).configureEach {
 
 dependencies {
     String jUnitVersion = '5.14.4'
+    String javaFxVersion = '17.0.7'
+
+    // JavaFX native libraries must match the machine running this build.
+    String osName = System.getProperty('os.name').toLowerCase()
+    boolean isArm = System.getProperty('os.arch') in ['aarch64', 'arm64']
+    String javaFxPlatform = osName.contains('mac') ? (isArm ? 'mac-aarch64' : 'mac')
+            : osName.contains('win') ? 'win' : (isArm ? 'linux-aarch64' : 'linux')
+    ['base', 'controls', 'fxml', 'graphics'].each { module ->
+        implementation "org.openjfx:javafx-${module}:${javaFxVersion}:${javaFxPlatform}"
+    }
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
 
@@ -36,7 +46,9 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'gui'
+    }
 
     testLogging {
         events 'passed', 'skipped', 'failed'
@@ -50,7 +62,7 @@ test {
 }
 
 application {
-    mainClass = 'zikiai.Zikiai'
+    mainClass = 'zikiai.Launcher'
 }
 
 jar {
@@ -66,4 +78,30 @@ shadowJar {
 
 run {
     standardInput = System.in
+}
+
+tasks.register('runCli', JavaExec) {
+    group = 'application'
+    description = 'Runs the original console interface.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'zikiai.Zikiai'
+    standardInput = System.in
+}
+
+tasks.register('printCompileClasspath') {
+    description = 'Provides dependencies for the isolated console test compiler.'
+    doLast {
+        println configurations.compileClasspath.asPath
+    }
+}
+
+tasks.register('guiTest', Test) {
+    group = 'verification'
+    description = 'Runs JavaFX smoke tests; requires a graphical desktop.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'gui'
+    }
+    systemProperty 'gui.snapshot', layout.buildDirectory.file('reports/gui/window.png').get().asFile.absolutePath
 }
