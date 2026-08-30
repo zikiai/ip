@@ -24,6 +24,39 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
 
+## Checking code style and running tests
+
+Use JDK 25 and run these commands from the project root (the folder containing
+`build.gradle`):
+
+```bash
+./gradlew checkstyleMain checkstyleTest
+./gradlew check
+```
+
+The first command checks production and test Java code for style violations.
+The second runs both Checkstyle and the JUnit tests. `./gradlew build` also
+includes these checks. On Windows, replace `./gradlew` with `gradlew.bat`.
+Any Checkstyle errors or warnings fail the build.
+
+Checkstyle 11.0.0 uses the rules in `config/checkstyle/checkstyle.xml` and the
+test Javadoc exceptions in `config/checkstyle/suppressions.xml`. These files
+come from [AddressBook Level 3](https://github.com/se-edu/addressbook-level3/tree/master/config/checkstyle),
+following the [SE-EDU setup tutorial](https://se-education.org/guides/tutorials/checkstyle.html).
+The configuration complements code review; passing Checkstyle does not prove
+that every coding-standard rule or program behavior is correct.
+
+Open the generated reports in a browser to see violations and their locations:
+
+- `build/reports/checkstyle/main.html`
+- `build/reports/checkstyle/test.html`
+- `build/reports/tests/test/index.html` (JUnit results)
+
+For optional editor feedback in IntelliJ, install **Checkstyle-IDEA**, select
+Checkstyle **11.0.0**, and activate the local `config/checkstyle/checkstyle.xml`
+configuration under **Settings > Tools > Checkstyle**. Include test sources in
+the scan scope. Reload the Gradle project after changing `build.gradle`.
+
 ## Creating an executable JAR
 
 Zikiai uses the Shadow plugin to create a self-contained JAR containing the
