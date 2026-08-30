@@ -156,6 +156,30 @@ class ParserTest {
     }
 
     @Test
+    void parseDeadline_separatorInDate_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseDeadline("deadline report /by 2026-08-23 | noon"));
+
+        assertEquals("Task details cannot contain the | character.", exception.getMessage());
+    }
+
+    @Test
+    void parseEvent_separatorInDescription_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseEvent("event team | meeting /from 2pm /to 4pm"));
+
+        assertEquals("Task details cannot contain the | character.", exception.getMessage());
+    }
+
+    @Test
+    void parseEvent_separatorInEndTime_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseEvent("event meeting /from 2pm /to 4pm | later"));
+
+        assertEquals("Task details cannot contain the | character.", exception.getMessage());
+    }
+
+    @Test
     void parseEvent_missingToMarker_exceptionThrown() {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseEvent("event team meeting /from Mon 2pm"));

@@ -246,8 +246,10 @@ public class Parser {
 
     /**
      * Rejects the field separator because it would make saved data ambiguous.
+     * Varargs lets the same check accept one todo field, two deadline fields,
+     * or three event fields without separate overloads or caller-created arrays.
      *
-     * @param values task fields that will be written to storage.
+     * @param values task fields to validate; every supplied field is checked.
      * @throws ZikiaiException if any field contains the reserved separator.
      */
     private void validateStorageText(String... values) throws ZikiaiException {
