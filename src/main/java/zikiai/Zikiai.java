@@ -71,40 +71,68 @@ public class Zikiai {
             return Ui.formatGoodbye();
         }
         try {
-            if (parser.isMarkCommand(input)) {
-                Task task = tasks.markAsDone(parser.parseTaskIndex(input, tasks.size()));
-                storage.save(tasks);
-                return Ui.formatTaskMarked(task);
-            }
-            if (parser.isUnmarkCommand(input)) {
-                Task task = tasks.markAsNotDone(parser.parseTaskIndex(input, tasks.size()));
-                storage.save(tasks);
-                return Ui.formatTaskUnmarked(task);
-            }
-            if (parser.isDeleteCommand(input)) {
-                Task task = tasks.delete(parser.parseTaskIndex(input, tasks.size()));
-                storage.save(tasks);
-                return Ui.formatTaskDeleted(task, tasks.size());
-            }
-            if (parser.isListCommand(input)) {
-                return Ui.formatTaskList(tasks);
-            }
-            if (parser.isFindCommand(input)) {
-                return Ui.formatMatchingTasks(tasks.find(parser.parseFindKeyword(input)));
-            }
-            if (parser.isTodoCommand(input)) {
-                return addTask(parser.parseTodo(input));
-            }
-            if (parser.isDeadlineCommand(input)) {
-                return addTask(parser.parseDeadline(input));
-            }
-            if (parser.isEventCommand(input)) {
-                return addTask(parser.parseEvent(input));
-            }
-            throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
+            return executeCommand(input);
         } catch (ZikiaiException exception) {
             return Ui.formatError(exception);
         }
+    }
+
+    /**
+     * Routes a recognized command to its corresponding task operation.
+     */
+    private String executeCommand(String input) throws ZikiaiException {
+        if (parser.isMarkCommand(input)) {
+            return markTask(input);
+        }
+        if (parser.isUnmarkCommand(input)) {
+            return unmarkTask(input);
+        }
+        if (parser.isDeleteCommand(input)) {
+            return deleteTask(input);
+        }
+        if (parser.isListCommand(input)) {
+            return Ui.formatTaskList(tasks);
+        }
+        if (parser.isFindCommand(input)) {
+            return Ui.formatMatchingTasks(tasks.find(parser.parseFindKeyword(input)));
+        }
+        if (parser.isTodoCommand(input)) {
+            return addTask(parser.parseTodo(input));
+        }
+        if (parser.isDeadlineCommand(input)) {
+            return addTask(parser.parseDeadline(input));
+        }
+        if (parser.isEventCommand(input)) {
+            return addTask(parser.parseEvent(input));
+        }
+        throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
+    }
+
+    /**
+     * Marks and saves the task identified by the command.
+     */
+    private String markTask(String input) throws ZikiaiException {
+        Task task = tasks.markAsDone(parser.parseTaskIndex(input, tasks.size()));
+        storage.save(tasks);
+        return Ui.formatTaskMarked(task);
+    }
+
+    /**
+     * Unmarks and saves the task identified by the command.
+     */
+    private String unmarkTask(String input) throws ZikiaiException {
+        Task task = tasks.markAsNotDone(parser.parseTaskIndex(input, tasks.size()));
+        storage.save(tasks);
+        return Ui.formatTaskUnmarked(task);
+    }
+
+    /**
+     * Deletes and saves the task identified by the command.
+     */
+    private String deleteTask(String input) throws ZikiaiException {
+        Task task = tasks.delete(parser.parseTaskIndex(input, tasks.size()));
+        storage.save(tasks);
+        return Ui.formatTaskDeleted(task, tasks.size());
     }
 
     /**
