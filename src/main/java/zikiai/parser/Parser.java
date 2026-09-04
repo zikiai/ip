@@ -12,6 +12,18 @@ import zikiai.task.Todo;
  * Recognizes commands and converts their text into validated values and tasks.
  */
 public class Parser {
+    private static final String BYE_COMMAND = "bye";
+    private static final String MARK_COMMAND = "mark";
+    private static final String UNMARK_COMMAND = "unmark";
+    private static final String DELETE_COMMAND = "delete";
+    private static final String LIST_COMMAND = "list";
+    private static final String FIND_COMMAND = "find";
+    private static final String TODO_COMMAND = "todo";
+    private static final String DEADLINE_COMMAND = "deadline";
+    private static final String EVENT_COMMAND = "event";
+    private static final String BY_MARKER = "/by";
+    private static final String FROM_MARKER = "/from";
+    private static final String TO_MARKER = "/to";
 
     /**
      * Creates a parser for recognizing and validating Zikiai commands.
@@ -26,7 +38,7 @@ public class Parser {
      * @return true for the bye command.
      */
     public boolean isByeCommand(String input) {
-        return input.equals("bye");
+        return input.equals(BYE_COMMAND);
     }
 
     /**
@@ -36,7 +48,7 @@ public class Parser {
      * @return true when the command contains a numeric task number.
      */
     public boolean isMarkCommand(String input) {
-        return input.matches("mark \\d+");
+        return isNumberedCommand(input, MARK_COMMAND);
     }
 
     /**
@@ -46,7 +58,7 @@ public class Parser {
      * @return true when the command contains a numeric task number.
      */
     public boolean isUnmarkCommand(String input) {
-        return input.matches("unmark \\d+");
+        return isNumberedCommand(input, UNMARK_COMMAND);
     }
 
     /**
@@ -56,7 +68,7 @@ public class Parser {
      * @return true when the command contains a numeric task number.
      */
     public boolean isDeleteCommand(String input) {
-        return input.matches("delete \\d+");
+        return isNumberedCommand(input, DELETE_COMMAND);
     }
 
     /**
@@ -66,7 +78,7 @@ public class Parser {
      * @return true for the list command.
      */
     public boolean isListCommand(String input) {
-        return input.equals("list");
+        return input.equals(LIST_COMMAND);
     }
 
     /**
@@ -76,7 +88,7 @@ public class Parser {
      * @return true for a find command, including an empty one.
      */
     public boolean isFindCommand(String input) {
-        return input.equals("find") || input.startsWith("find ");
+        return isCommandWithOptionalArguments(input, FIND_COMMAND);
     }
 
     /**
@@ -86,7 +98,7 @@ public class Parser {
      * @return true for a todo command, including an empty one.
      */
     public boolean isTodoCommand(String input) {
-        return input.equals("todo") || input.startsWith("todo ");
+        return isCommandWithOptionalArguments(input, TODO_COMMAND);
     }
 
     /**
@@ -96,7 +108,7 @@ public class Parser {
      * @return true for a deadline command, including an empty one.
      */
     public boolean isDeadlineCommand(String input) {
-        return input.equals("deadline") || input.startsWith("deadline ");
+        return isCommandWithOptionalArguments(input, DEADLINE_COMMAND);
     }
 
     /**
@@ -106,7 +118,7 @@ public class Parser {
      * @return true for an event command, including an empty one.
      */
     public boolean isEventCommand(String input) {
-        return input.equals("event") || input.startsWith("event ");
+        return isCommandWithOptionalArguments(input, EVENT_COMMAND);
     }
 
     /**
@@ -118,7 +130,7 @@ public class Parser {
      * @throws ZikiaiException if the number is too large or does not identify a task.
      */
     public int parseTaskIndex(String input, int taskCount) throws ZikiaiException {
-        String numberText = input.substring(input.indexOf(' ') + 1);
+        String numberText = input.substring(input.indexOf(' ')).trim();
         int taskNumber;
         try {
             taskNumber = Integer.parseInt(numberText);
@@ -141,7 +153,7 @@ public class Parser {
      * @throws ZikiaiException if the keyword is empty.
      */
     public String parseFindKeyword(String input) throws ZikiaiException {
-        String keyword = input.substring(4).trim();
+        String keyword = input.substring(FIND_COMMAND.length()).trim();
         if (keyword.isEmpty()) {
             throw new ZikiaiException("Please enter a keyword to find.");
         }
@@ -156,11 +168,11 @@ public class Parser {
      * @throws ZikiaiException if its description is empty or cannot be stored safely.
      */
     public Todo parseTodo(String input) throws ZikiaiException {
-        if (input.equals("todo")) {
+        if (input.equals(TODO_COMMAND)) {
             throw new ZikiaiException("The description of a todo cannot be empty.");
         }
 
-        String description = input.substring(5).trim();
+        String description = input.substring(TODO_COMMAND.length()).trim();
         if (description.isEmpty()) {
             throw new ZikiaiException("The description of a todo cannot be empty.");
         }
@@ -176,18 +188,18 @@ public class Parser {
      * @throws ZikiaiException if required fields or a valid ISO date are missing.
      */
     public Deadline parseDeadline(String input) throws ZikiaiException {
-        if (input.equals("deadline")) {
+        if (input.equals(DEADLINE_COMMAND)) {
             throw new ZikiaiException("The description of a deadline cannot be empty.");
         }
 
-        String details = input.substring(9).trim();
-        int byIndex = details.indexOf("/by");
+        String details = input.substring(DEADLINE_COMMAND.length()).trim();
+        int byIndex = details.indexOf(BY_MARKER);
         if (byIndex == -1) {
             throw new ZikiaiException("Please specify a deadline using /by.");
         }
 
         String description = details.substring(0, byIndex).trim();
-        String deadlineText = details.substring(byIndex + 3).trim();
+        String deadlineText = details.substring(byIndex + BY_MARKER.length()).trim();
         if (description.isEmpty() || deadlineText.isEmpty()) {
             throw new ZikiaiException("Please provide both a task and a deadline.");
         }
@@ -203,28 +215,42 @@ public class Parser {
      * @throws ZikiaiException if required fields are missing or cannot be stored safely.
      */
     public Event parseEvent(String input) throws ZikiaiException {
-        if (input.equals("event")) {
+        if (input.equals(EVENT_COMMAND)) {
             throw new ZikiaiException("The description of an event cannot be empty.");
         }
 
-        String details = input.substring(6).trim();
-        int fromIndex = details.indexOf("/from");
+        String details = input.substring(EVENT_COMMAND.length()).trim();
+        int fromIndex = details.indexOf(FROM_MARKER);
         int toIndex = fromIndex == -1
                 ? -1
-                : details.indexOf("/to", fromIndex + 5);
+                : details.indexOf(TO_MARKER, fromIndex + FROM_MARKER.length());
         if (fromIndex == -1 || toIndex == -1) {
             throw new ZikiaiException("Please specify an event using /from and /to.");
         }
 
         String description = details.substring(0, fromIndex).trim();
-        String from = details.substring(fromIndex + 5, toIndex).trim();
-        String to = details.substring(toIndex + 3).trim();
+        String from = details.substring(fromIndex + FROM_MARKER.length(), toIndex).trim();
+        String to = details.substring(toIndex + TO_MARKER.length()).trim();
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new ZikiaiException(
                     "Please provide an event, a start time, and an end time.");
         }
         validateStorageText(description, from, to);
         return new Event(description, from, to);
+    }
+
+    /**
+     * Returns whether the input is a command followed by a numeric task number.
+     */
+    private boolean isNumberedCommand(String input, String command) {
+        return input.matches(command + " \\d+");
+    }
+
+    /**
+     * Returns whether the input is a command with or without arguments.
+     */
+    private boolean isCommandWithOptionalArguments(String input, String command) {
+        return input.equals(command) || input.startsWith(command + " ");
     }
 
     /**
