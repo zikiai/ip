@@ -1,42 +1,37 @@
 .label {
-    background: white;
-    -fx-background-color: background;
-    -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
-    -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-radius: 1em 1em 0 1em;
-    -fx-padding: 6px;
-    -fx-border-insets: 0 7px 0 7px;
+    -fx-background-color: rgba(217, 235, 230, 0.96);
     -fx-background-insets: 0 7px 0 7px;
-    -fx-text-fill: ladder(background, white 49%, black 50%);
+    -fx-background-radius: 14px 14px 3px 14px;
+    -fx-border-color: rgba(80, 124, 114, 0.42);
+    -fx-border-insets: 0 7px 0 7px;
+    -fx-border-radius: 14px 14px 3px 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(38, 54, 50, 0.12), 6, 0.1, 0, 2);
+    -fx-font-size: 14px;
+    -fx-line-spacing: 2px;
+    -fx-padding: 10px 12px;
+    -fx-text-fill: #263a35;
 }
 
 .reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+    -fx-background-color: rgba(255, 252, 245, 0.97);
+    -fx-background-radius: 14px 14px 14px 3px;
+    -fx-border-color: rgba(139, 125, 101, 0.38);
+    -fx-border-radius: 14px 14px 14px 3px;
 }
 
 #displayPicture {
-    /* Shadow effect on image. */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-
-    /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
+    -fx-effect: dropshadow(gaussian, rgba(38, 54, 50, 0.24), 7, 0.2, 0, 2);
 }
 
 .add-label {
-    -fx-background-color: yellow;
+    -fx-background-color: #fff3bd;
 }
 
 .marked-label {
-    -fx-background-color: palegreen;
+    -fx-background-color: #dcefd8;
 }
 
 .delete-label {
-    -fx-background-color: lightpink;
+    -fx-background-color: #f3d9d2;
 }
