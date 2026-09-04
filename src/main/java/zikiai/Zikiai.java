@@ -31,6 +31,7 @@ public class Zikiai {
      * @param storage storage used by this session.
      */
     public Zikiai(Storage storage) {
+        assert storage != null : "Storage must not be null";
         this.storage = storage;
         try {
             tasks = new TaskList(storage.load());

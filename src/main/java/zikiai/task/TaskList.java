@@ -22,7 +22,21 @@ public class TaskList {
      * @param tasks tasks loaded from storage.
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "Source task list must not be null";
+        assert hasNoNullTasks(tasks) : "Source task list must not contain null tasks";
         this.tasks = new ArrayList<>(tasks);
+    }
+
+    /**
+     * Returns whether every entry in the supplied list is a task.
+     */
+    private static boolean hasNoNullTasks(List<Task> tasks) {
+        for (Task task : tasks) {
+            if (task == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -31,6 +45,7 @@ public class TaskList {
      * @param task task to add.
      */
     public void add(Task task) {
+        assert task != null : "Task to add must not be null";
         tasks.add(task);
     }
 
@@ -85,6 +100,8 @@ public class TaskList {
      * @return matching tasks in their original order.
      */
     public TaskList find(String keyword) {
+        assert keyword != null && !keyword.isBlank()
+                : "Search keyword must not be blank";
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getDescriptionText().contains(keyword)) {
