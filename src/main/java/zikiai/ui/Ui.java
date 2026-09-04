@@ -89,11 +89,7 @@ public class Ui {
      * @param tasks task list to display.
      */
     public static String formatTaskList(TaskList tasks) {
-        StringBuilder response = new StringBuilder("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            response.append("\n").append(i + 1).append(".").append(tasks.get(i).getDescription());
-        }
-        return response.toString();
+        return formatNumberedTasks("Here are the tasks in your list:", tasks);
     }
 
     /**
@@ -105,9 +101,16 @@ public class Ui {
         if (matchingTasks.size() == 0) {
             return "There are none!";
         }
-        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            response.append("\n").append(i + 1).append(".").append(matchingTasks.get(i).getDescription());
+        return formatNumberedTasks("Here are the matching tasks in your list:", matchingTasks);
+    }
+
+    /**
+     * Formats the supplied tasks below a heading using one-based numbering.
+     */
+    private static String formatNumberedTasks(String heading, TaskList tasks) {
+        StringBuilder response = new StringBuilder(heading);
+        for (int i = 0; i < tasks.size(); i++) {
+            response.append("\n").append(i + 1).append(".").append(tasks.get(i).getDescription());
         }
         return response.toString();
     }
