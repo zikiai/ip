@@ -15,6 +15,19 @@ import org.junit.jupiter.api.Test;
 class TaskListTest {
 
     @Test
+    void constructor_nullSource_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> new TaskList(null));
+    }
+
+    @Test
+    void constructor_sourceContainingNull_assertionErrorThrown() {
+        List<Task> source = new ArrayList<>();
+        source.add(null);
+
+        assertThrows(AssertionError.class, () -> new TaskList(source));
+    }
+
+    @Test
     void constructor_emptyList_sizeIsZero() {
         TaskList tasks = new TaskList();
 
@@ -44,6 +57,13 @@ class TaskListTest {
 
         assertEquals(2, tasks.size());
         assertSame(second, tasks.get(1));
+    }
+
+    @Test
+    void add_nullTask_assertionErrorThrown() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(AssertionError.class, () -> tasks.add(null));
     }
 
     @Test
@@ -132,5 +152,12 @@ class TaskListTest {
         assertEquals(2, tasks.size());
         assertSame(first, tasks.get(0));
         assertSame(second, tasks.get(1));
+    }
+
+    @Test
+    void find_blankKeyword_assertionErrorThrown() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(AssertionError.class, () -> tasks.find(" "));
     }
 }
