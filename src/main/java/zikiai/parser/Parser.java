@@ -118,6 +118,10 @@ public class Parser {
      * @throws ZikiaiException if the number is too large or does not identify a task.
      */
     public int parseTaskIndex(String input, int taskCount) throws ZikiaiException {
+        assert input != null && input.matches("(?:mark|unmark|delete) \\d+")
+                : "Input must be a numbered task command";
+        assert taskCount >= 0 : "Task count must not be negative";
+
         String numberText = input.substring(input.indexOf(' ') + 1);
         int taskNumber;
         try {

@@ -1,6 +1,7 @@
 package zikiai.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
@@ -10,6 +11,11 @@ import org.junit.jupiter.api.Test;
  * Tests the user-facing and persistent date formats of deadline tasks.
  */
 class DeadlineTest {
+
+    @Test
+    void constructor_nullDeadline_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> new Deadline("submit report", null));
+    }
 
     @Test
     void constructor_isoDate_friendlyDisplayAndIsoStorageReturned() {
