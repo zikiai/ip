@@ -51,6 +51,16 @@ class ParserTest {
     }
 
     @Test
+    void parseTaskIndex_nonNumberedCommand_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> parser.parseTaskIndex("list", 3));
+    }
+
+    @Test
+    void parseTaskIndex_negativeTaskCount_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> parser.parseTaskIndex("mark 1", -1));
+    }
+
+    @Test
     void parseFindKeyword_validCommand_trimmedKeywordReturned() throws ZikiaiException {
         assertEquals("return book", parser.parseFindKeyword("find   return book   "));
     }

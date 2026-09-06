@@ -1,6 +1,7 @@
 package zikiai.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,11 @@ import org.junit.jupiter.api.Test;
  * Tests the display and storage representations of todo tasks.
  */
 class TodoTest {
+
+    @Test
+    void constructor_blankDescription_assertionErrorThrown() {
+        assertThrows(AssertionError.class, () -> new Todo("   "));
+    }
 
     @Test
     void constructor_newTodo_incompleteRepresentationsReturned() {
