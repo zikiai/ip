@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import zikiai.exception.ZikiaiException;
 import zikiai.task.Deadline;
 import zikiai.task.Event;
+import zikiai.task.Priority;
 import zikiai.task.Todo;
 
 /**
@@ -58,6 +59,60 @@ class ParserTest {
     @Test
     void parseTaskIndex_negativeTaskCount_assertionErrorThrown() {
         assertThrows(AssertionError.class, () -> parser.parseTaskIndex("mark 1", -1));
+    }
+
+    @Test
+    void parsePriorityTaskIndex_validCommand_zeroBasedIndexReturned() throws ZikiaiException {
+        assertEquals(1, parser.parsePriorityTaskIndex("priority 2 high", 3));
+    }
+
+    @Test
+    void parsePriorityTaskIndex_nonNumericNumber_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () ->
+                        parser.parsePriorityTaskIndex("priority two high", 3));
+
+        assertEquals(
+                "Use priority TASK_NUMBER with high, medium, low, or none.",
+                exception.getMessage());
+    }
+
+    @Test
+    void parsePriorityTaskIndex_numberBeyondList_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () ->
+                        parser.parsePriorityTaskIndex("priority 4 high", 3));
+
+        assertEquals("That task number does not exist.", exception.getMessage());
+    }
+
+    @Test
+    void parsePriority_validLevels_prioritiesReturned() throws ZikiaiException {
+        assertEquals(Priority.HIGH, parser.parsePriority("priority 1 high"));
+        assertEquals(Priority.MEDIUM, parser.parsePriority("priority 1 medium"));
+        assertEquals(Priority.LOW, parser.parsePriority("priority 1 low"));
+        assertEquals(Priority.NONE, parser.parsePriority("priority 1 none"));
+    }
+
+    @Test
+    void parsePriority_unknownLevel_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () ->
+                        parser.parsePriority("priority 1 urgent"));
+
+        assertEquals(
+                "Use priority TASK_NUMBER with high, medium, low, or none.",
+                exception.getMessage());
+    }
+
+    @Test
+    void parsePriority_missingLevel_exceptionThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parsePriority("priority 1"));
+
+        assertEquals(
+                "Use priority TASK_NUMBER with high, medium, low, or none.",
+                exception.getMessage());
     }
 
     @Test

@@ -2,10 +2,12 @@ package zikiai.parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 
 import zikiai.exception.ZikiaiException;
 import zikiai.task.Deadline;
 import zikiai.task.Event;
+import zikiai.task.Priority;
 import zikiai.task.Todo;
 
 /**
@@ -21,6 +23,7 @@ public class Parser {
     private static final String TODO_COMMAND = "todo";
     private static final String DEADLINE_COMMAND = "deadline";
     private static final String EVENT_COMMAND = "event";
+    private static final String PRIORITY_COMMAND = "priority";
     private static final String BY_MARKER = "/by";
     private static final String FROM_MARKER = "/from";
     private static final String TO_MARKER = "/to";
@@ -122,6 +125,16 @@ public class Parser {
     }
 
     /**
+     * Returns whether the input begins a priority command.
+     *
+     * @param input complete user input.
+     * @return true for a priority command, including an incomplete one.
+     */
+    public boolean isPriorityCommand(String input) {
+        return isCommandWithOptionalArguments(input, PRIORITY_COMMAND);
+    }
+
+    /**
      * Extracts and validates the one-based task number in a command.
      *
      * @param input command containing a task number.
@@ -135,6 +148,46 @@ public class Parser {
         assert taskCount >= 0 : "Task count must not be negative";
 
         String numberText = input.substring(input.indexOf(' ')).trim();
+        return parseTaskNumber(numberText, taskCount);
+    }
+
+    /**
+     * Extracts and validates the one-based task number in a priority command.
+     *
+     * @param input complete priority command.
+     * @param taskCount current number of tasks.
+     * @return corresponding zero-based task index.
+     * @throws ZikiaiException if the command or task number is invalid.
+     */
+    public int parsePriorityTaskIndex(String input, int taskCount) throws ZikiaiException {
+        assert taskCount >= 0 : "Task count must not be negative";
+        String[] parts = parsePriorityParts(input);
+        if (!parts[1].matches("\\d+")) {
+            throw invalidPriorityCommand();
+        }
+        return parseTaskNumber(parts[1], taskCount);
+    }
+
+    /**
+     * Extracts and validates the priority level in a priority command.
+     *
+     * @param input complete priority command.
+     * @return requested priority.
+     * @throws ZikiaiException if the command contains an unknown priority.
+     */
+    public Priority parsePriority(String input) throws ZikiaiException {
+        String[] parts = parsePriorityParts(input);
+        try {
+            return Priority.valueOf(parts[2].toUpperCase(Locale.ENGLISH));
+        } catch (IllegalArgumentException exception) {
+            throw invalidPriorityCommand();
+        }
+    }
+
+    /**
+     * Converts a one-based task number into a validated zero-based index.
+     */
+    private int parseTaskNumber(String numberText, int taskCount) throws ZikiaiException {
         int taskNumber;
         try {
             taskNumber = Integer.parseInt(numberText);
@@ -147,6 +200,25 @@ public class Parser {
             throw new ZikiaiException("That task number does not exist.");
         }
         return taskIndex;
+    }
+
+    /**
+     * Splits a priority command into its command, task number, and level.
+     */
+    private String[] parsePriorityParts(String input) throws ZikiaiException {
+        String[] parts = input.trim().split("\\s+");
+        if (parts.length != 3 || !parts[0].equals(PRIORITY_COMMAND)) {
+            throw invalidPriorityCommand();
+        }
+        return parts;
+    }
+
+    /**
+     * Creates the consistent error used for malformed priority commands.
+     */
+    private ZikiaiException invalidPriorityCommand() {
+        return new ZikiaiException(
+                "Use priority TASK_NUMBER with high, medium, low, or none.");
     }
 
     /**

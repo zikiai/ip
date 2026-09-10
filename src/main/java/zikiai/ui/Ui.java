@@ -73,6 +73,15 @@ public class Ui {
     }
 
     /**
+     * Formats confirmation that a task's priority was updated.
+     *
+     * @param task task whose priority changed.
+     */
+    public static String formatTaskPrioritized(Task task) {
+        return "Got it. I've updated this task's priority:\n    " + task.getDescription();
+    }
+
+    /**
      * Formats confirmation that a task was removed.
      *
      * @param task task that was removed.
