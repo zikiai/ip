@@ -43,4 +43,34 @@ class TodoTest {
         assertEquals("[T][ ] read book", todo.getDescription());
         assertEquals("[T][ ] | read book", todo.toDataString());
     }
+
+    @Test
+    void setPriority_highPriority_priorityShownInBothRepresentations() {
+        Todo todo = new Todo("read book");
+
+        todo.setPriority(Priority.HIGH);
+
+        assertEquals(Priority.HIGH, todo.getPriority());
+        assertEquals("[T][HIGH][ ] read book", todo.getDescription());
+        assertEquals("[T][ ][H] | read book", todo.toDataString());
+    }
+
+    @Test
+    void setPriority_nonePriority_priorityRemovedFromRepresentations() {
+        Todo todo = new Todo("read book");
+        todo.setPriority(Priority.MEDIUM);
+
+        todo.setPriority(Priority.NONE);
+
+        assertEquals(Priority.NONE, todo.getPriority());
+        assertEquals("[T][ ] read book", todo.getDescription());
+        assertEquals("[T][ ] | read book", todo.toDataString());
+    }
+
+    @Test
+    void setPriority_nullPriority_assertionErrorThrown() {
+        Todo todo = new Todo("read book");
+
+        assertThrows(AssertionError.class, () -> todo.setPriority(null));
+    }
 }

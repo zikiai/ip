@@ -31,6 +31,7 @@ public class Todo extends Task {
      */
     @Override
     public String toDataString() {
-        return "[T][" + getStatusIcon() + "] | " + getDescriptionText();
+        return "[T][" + getStatusIcon() + "]" + getPriorityStorageTag()
+                + " | " + getDescriptionText();
     }
 }

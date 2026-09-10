@@ -43,6 +43,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toDataString() {
-        return "[D][" + getStatusIcon() + "] | " + getDescriptionText() + " | " + deadline;
+        return "[D][" + getStatusIcon() + "]" + getPriorityStorageTag()
+                + " | " + getDescriptionText() + " | " + deadline;
     }
 }

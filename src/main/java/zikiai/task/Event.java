@@ -40,7 +40,8 @@ public class Event extends Task {
      */
     @Override
     public String toDataString() {
-        return "[E][" + getStatusIcon() + "] | " + getDescriptionText()
+        return "[E][" + getStatusIcon() + "]" + getPriorityStorageTag()
+                + " | " + getDescriptionText()
                 + " | " + from + " | " + to;
     }
 }
