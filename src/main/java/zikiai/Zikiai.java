@@ -91,6 +91,9 @@ public class Zikiai {
         if (parser.isDeleteCommand(input)) {
             return deleteTask(input);
         }
+        if (parser.isPriorityCommand(input)) {
+            return prioritizeTask(input);
+        }
         if (parser.isListCommand(input)) {
             return Ui.formatTaskList(tasks);
         }
@@ -134,6 +137,17 @@ public class Zikiai {
         Task task = tasks.delete(parser.parseTaskIndex(input, tasks.size()));
         storage.save(tasks);
         return Ui.formatTaskDeleted(task, tasks.size());
+    }
+
+    /**
+     * Updates and saves the priority requested by the command.
+     */
+    private String prioritizeTask(String input) throws ZikiaiException {
+        Task task = tasks.setPriority(
+                parser.parsePriorityTaskIndex(input, tasks.size()),
+                parser.parsePriority(input));
+        storage.save(tasks);
+        return Ui.formatTaskPrioritized(task);
     }
 
     /**

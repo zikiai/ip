@@ -12,6 +12,7 @@ import java.util.List;
 import zikiai.exception.ZikiaiException;
 import zikiai.task.Deadline;
 import zikiai.task.Event;
+import zikiai.task.Priority;
 import zikiai.task.Task;
 import zikiai.task.TaskList;
 import zikiai.task.Todo;
@@ -100,7 +101,7 @@ public class Storage {
         String[] parts = line.split("\\s*\\|\\s*", -1);
         String taskHeader = parts[0];
 
-        if (!taskHeader.matches("\\[[TDE]\\]\\[[X ]\\]")) {
+        if (!taskHeader.matches("\\[[TDE]\\]\\[[X ]\\](?:\\[[HML]\\])?")) {
             throw invalidDataLine(lineNumber);
         }
 
@@ -131,7 +132,23 @@ public class Storage {
         if (taskHeader.charAt(4) == 'X') {
             task.markAsDone();
         }
+        task.setPriority(parsePriority(taskHeader, lineNumber));
         return task;
+    }
+
+    /**
+     * Returns the optional priority encoded in a validated task header.
+     */
+    private Priority parsePriority(String taskHeader, int lineNumber) throws ZikiaiException {
+        if (taskHeader.length() == 6) {
+            return Priority.NONE;
+        }
+        return switch (taskHeader.charAt(7)) {
+            case 'H' -> Priority.HIGH;
+            case 'M' -> Priority.MEDIUM;
+            case 'L' -> Priority.LOW;
+            default -> throw invalidDataLine(lineNumber);
+        };
     }
 
     /**

@@ -807,6 +807,205 @@ okay, bai bai
 [T][ ] | keep me
 ```
 
+## TC-23 Assign, display, persist, and clear priorities
+
+**Aim:** Verify that priorities can be assigned to different task types, displayed in the list, saved, and cleared using `none`.
+
+### Input
+
+```text
+todo read book
+deadline submit report /by 2026-09-20
+priority 1 high
+priority 2 medium
+list
+priority 1 none
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] read book
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [D][ ] submit report (by: Sep 20 2026)
+Now you have 2 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've updated this task's priority:
+    [T][HIGH][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've updated this task's priority:
+    [D][MEDIUM][ ] submit report (by: Sep 20 2026)
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][HIGH][ ] read book
+2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've updated this task's priority:
+    [T][ ] read book
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ] | read book
+[D][ ][M] | submit report | 2026-09-20
+```
+
+## TC-24 Reject invalid priorities without changing state
+
+**Aim:** Verify that malformed levels, nonnumeric task numbers, and missing tasks are rejected without affecting later valid priority changes.
+
+### Input
+
+```text
+todo keep me
+priority 1 urgent
+list
+priority one high
+list
+priority 99 low
+list
+priority 1 low
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've added this task:
+    [T][ ] keep me
+Now you have 1 tasks in the list.
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Use priority TASK_NUMBER with high, medium, low, or none.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! Use priority TASK_NUMBER with high, medium, low, or none.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+OOPSSSIES!!! That task number does not exist.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've updated this task's priority:
+    [T][LOW][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][LOW][ ] keep me
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][ ][L] | keep me
+```
+
+## TC-25 Load and update prioritized task types
+
+**Aim:** Verify that saved priorities and completion states load for every task type and remain writable.
+
+### Initial data file
+
+```text
+[T][X][H] | read book
+[D][ ][M] | submit report | 2026-09-20
+[E][ ][L] | project meeting | 2pm | 4pm
+```
+
+### Input
+
+```text
+list
+priority 3 high
+list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai.
+What can I do for you?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][HIGH][X] read book
+2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
+3.[E][LOW][ ] project meeting (from: 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+Got it. I've updated this task's priority:
+    [E][HIGH][ ] project meeting (from: 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are the tasks in your list:
+1.[T][HIGH][X] read book
+2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
+3.[E][HIGH][ ] project meeting (from: 2pm to: 4pm)
+{{SEPARATOR}}
+{{SEPARATOR}}
+okay, bai bai
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][X][H] | read book
+[D][ ][M] | submit report | 2026-09-20
+[E][ ][H] | project meeting | 2pm | 4pm
+```
+
 ## TC-18 Load an empty data file
 
 **Aim:** Verify that an existing empty data file behaves like an empty task list and does not cause a startup error.

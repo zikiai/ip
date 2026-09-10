@@ -58,12 +58,33 @@ class ZikiaiTest {
     }
 
     @Test
+    void getResponse_priorityChanges_savedAcrossSessions() {
+        Zikiai bot = newSession();
+        bot.getResponse("todo read book");
+
+        assertEquals(
+                "Got it. I've updated this task's priority:\n    [T][HIGH][ ] read book",
+                bot.getResponse("priority 1 high"));
+        assertEquals(
+                "Here are the tasks in your list:\n1.[T][HIGH][ ] read book",
+                newSession().getResponse("list"));
+
+        assertEquals(
+                "Got it. I've updated this task's priority:\n    [T][ ] read book",
+                bot.getResponse("priority 1 none"));
+        assertEquals(
+                "Here are the tasks in your list:\n1.[T][ ] read book",
+                newSession().getResponse("list"));
+    }
+
+    @Test
     void getResponse_invalidCommands_preserveStateAndRecover() {
         Zikiai bot = newSession();
         bot.getResponse("todo keep me");
         String original = bot.getResponse("list");
         String[] invalidInputs = {"todo", "deadline bad /by Sunday", "event bad", "mark 99",
-            "unmark 0", "delete 99", "find", "unknown", ""};
+            "unmark 0", "delete 99", "priority", "priority one high", "priority 1 urgent",
+            "priority 99 high", "find", "unknown", ""};
         for (String input : invalidInputs) {
             assertTrue(bot.getResponse(input).startsWith("OOPSSSIES!!! "), input);
             assertEquals(original, bot.getResponse("list"), input);

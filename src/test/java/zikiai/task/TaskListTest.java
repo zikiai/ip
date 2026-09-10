@@ -112,6 +112,18 @@ class TaskListTest {
     }
 
     @Test
+    void setPriority_validTask_priorityChangedAndTaskReturned() {
+        Task task = new Todo("read book");
+        TaskList tasks = new TaskList(List.of(task));
+
+        Task prioritizedTask = tasks.setPriority(0, Priority.HIGH);
+
+        assertSame(task, prioritizedTask);
+        assertEquals(Priority.HIGH, tasks.get(0).getPriority());
+        assertEquals("[T][HIGH][ ] read book", tasks.get(0).getDescription());
+    }
+
+    @Test
     void get_indexOutsideList_exceptionThrown() {
         TaskList tasks = new TaskList();
 

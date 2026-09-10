@@ -84,6 +84,19 @@ public class TaskList {
     }
 
     /**
+     * Assigns a priority to the task at the given zero-based index.
+     *
+     * @param index zero-based task index.
+     * @param priority priority to assign.
+     * @return task whose priority changed.
+     */
+    public Task setPriority(int index, Priority priority) {
+        Task task = tasks.get(index);
+        task.setPriority(priority);
+        return task;
+    }
+
+    /**
      * Returns the task at the given zero-based index.
      *
      * @param index zero-based task index.
