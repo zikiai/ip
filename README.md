@@ -68,8 +68,20 @@ the scan scope. Reload the Gradle project after changing `build.gradle`.
 ## Using the graphical chatbot
 
 Type a command and click **Send** or press **Enter**. All existing commands work:
-`todo`, `deadline`, `event`, `list`, `find`, `mark`, `unmark`, and `delete`.
-For example, try `todo read book`, then `mark 1`, then `list`.
+`todo`, `deadline`, `event`, `list`, `find`, `mark`, `unmark`, `delete`, and
+`priority`. For example, try `todo read book`, then `priority 1 high`, then
+`list`.
+
+Set a task's priority using its list number and one of `high`, `medium`, or
+`low`, or use `none` to clear it:
+
+```text
+priority 1 high
+priority 1 none
+```
+
+Priorities appear in task output as `[HIGH]`, `[MEDIUM]`, or `[LOW]` and are
+saved automatically with the rest of the task data.
 
 Empty submissions are ignored. `bye` ends the session and disables the input,
 leaving the farewell visible until you close the window. A startup loading error
