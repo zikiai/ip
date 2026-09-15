@@ -84,7 +84,7 @@ class UiTest {
         assertEquals(
                 "Hello! I'm Zikiai, your task buddy.\nWhat do you need help with today ah?",
                 Ui.getGreeting());
-        assertEquals("Okay, bye bye! See you again, lah.", Ui.formatGoodbye());
+        assertEquals("Okay, bye bye! See you again lah.", Ui.formatGoodbye());
         assertEquals(
                 "Aiyo! Something went wrong.",
                 Ui.formatError(new ZikiaiException("Something went wrong.")));

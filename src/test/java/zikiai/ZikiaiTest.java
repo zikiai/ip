@@ -125,9 +125,9 @@ class ZikiaiTest {
     @Test
     void getResponse_bye_blocksFurtherChanges() {
         Zikiai bot = newSession();
-        assertEquals("Okay, bye bye! See you again, lah.", bot.getResponse("bye"));
+        assertEquals("Okay, bye bye! See you again lah.", bot.getResponse("bye"));
         assertFalse(bot.canAcceptCommands());
-        assertEquals("Okay, bye bye! See you again, lah.", bot.getResponse("todo should not be added"));
+        assertEquals("Okay, bye bye! See you again lah.", bot.getResponse("todo should not be added"));
         assertEquals("Here are your tasks:", newSession().getResponse("list"));
     }
 

@@ -43,7 +43,7 @@ Here are your tasks:
 1.[T][ ] borrow book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -82,7 +82,7 @@ Here are your tasks:
 1.[D][X] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -126,7 +126,7 @@ Here are your tasks:
 1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -157,7 +157,7 @@ Aiyo! Use todo DESCRIPTION, for example todo read book.
 Aiyo! Walao, I don't understand that command leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -199,7 +199,7 @@ Here are your tasks:
 1.[T][ ] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -256,7 +256,7 @@ Here are your tasks:
 Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -306,7 +306,7 @@ Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -362,7 +362,7 @@ Here are your tasks:
 1.[T][ ] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -424,7 +424,7 @@ Here are your tasks:
 2.[T][X] third
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -482,7 +482,7 @@ Here are your tasks:
 1.[T][ ] saved task
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -534,7 +534,7 @@ Okay, removed this task already:
 You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -576,7 +576,7 @@ Okay, removed this task already:
 You have 0 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -637,7 +637,7 @@ Here are your tasks:
 2.[E][X] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -797,7 +797,7 @@ Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -867,7 +867,7 @@ Here are your tasks:
 2.[D][ ] submit report (by: Sep 30 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -936,7 +936,7 @@ Here are your tasks:
 2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1009,7 +1009,7 @@ Here are your tasks:
 1.[T][LOW][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1065,7 +1065,7 @@ Here are your tasks:
 3.[E][HIGH][ ] project meeting (from: 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1106,7 +1106,7 @@ What do you need help with today ah?
 Here are your tasks:
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1166,7 +1166,7 @@ Here are your tasks:
 2.[D][ ] leap day (by: Feb 29 2024)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1245,7 +1245,7 @@ Found these matching tasks for you:
 2.[D][ ] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 
@@ -1300,7 +1300,7 @@ Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Okay, bye bye! See you again, lah.
+Okay, bye bye! See you again lah.
 {{SEPARATOR}}
 ```
 

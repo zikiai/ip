@@ -148,7 +148,7 @@ public class Ui {
      * Formats the chatbot's farewell message.
      */
     public static String formatGoodbye() {
-        return "Okay, bye bye! See you again, lah.";
+        return "Okay, bye bye! See you again lah.";
     }
 
     /**

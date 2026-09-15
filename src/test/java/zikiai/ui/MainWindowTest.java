@@ -99,7 +99,7 @@ class MainWindowTest {
                 saveSnapshot(root);
                 input.setText("bye");
                 send.fire();
-                assertEquals("Okay, bye bye! See you again, lah.", lastReply(dialogs));
+                assertEquals("Okay, bye bye! See you again lah.", lastReply(dialogs));
                 assertTrue(input.isDisabled());
                 assertTrue(send.isDisabled());
             } finally {
