@@ -14,7 +14,7 @@
         <Pane styleClass="header-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefHeight="64.0" />
         <Label alignment="CENTER" styleClass="app-title" text="Zikiai" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
         <Label alignment="CENTER" styleClass="app-subtitle" text="your calm task companion" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0" />
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" hvalue="1.0" vvalue="1.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" hvalue="1.0" vvalue="1.0" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
             <content>
                 <VBox fx:id="dialogContainer" fillWidth="true" spacing="2.0">
                     <padding>
@@ -23,7 +23,9 @@
                 </VBox>
             </content>
         </ScrollPane>
-        <TextField fx:id="userInput" onAction="#handleUserInput" prefHeight="42.0" promptText="Enter a command..." AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="102.0" />
+        <Pane styleClass="composer-bar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" prefHeight="82.0" />
+        <Label fx:id="commandHint" styleClass="command-hint" text="Try: todo read book  •  list  •  priority 1 high" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+        <TextField fx:id="userInput" onAction="#handleUserInput" prefHeight="42.0" promptText="Type a command…" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="102.0" />
         <Button fx:id="sendButton" mnemonicParsing="false" onAction="#handleUserInput" prefHeight="42.0" prefWidth="82.0" text="Send" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="12.0" />
     </children>
 </AnchorPane>

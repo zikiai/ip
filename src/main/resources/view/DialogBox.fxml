@@ -8,9 +8,9 @@
 <fx:root alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="520.0" stylesheets="@../css/dialog-box.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="dialog" maxWidth="365.0" minHeight="-Infinity" text="Label" wrapText="true" />
-        <ImageView fx:id="displayPicture" fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="displayPicture" fitHeight="46.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" />
     </children>
     <padding>
-        <Insets bottom="7.0" left="4.0" right="4.0" top="7.0" />
+        <Insets bottom="5.0" left="6.0" right="6.0" top="5.0" />
     </padding>
 </fx:root>

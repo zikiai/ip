@@ -25,9 +25,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import zikiai.Zikiai;
@@ -72,6 +75,15 @@ class MainWindowTest {
                 send.fire();
                 assertEquals("", input.getText());
                 assertEquals(3, dialogs.getChildren().size());
+                HBox userDialog = (HBox) dialogs.getChildren().get(1);
+                HBox zikiaiDialog = (HBox) dialogs.getChildren().get(2);
+                assertTrue(userDialog.getStyleClass().contains("user-dialog"));
+                assertFalse(userDialog.lookup("#displayPicture").isVisible());
+                assertTrue(zikiaiDialog.getStyleClass().contains("zikiai-dialog"));
+                assertTrue(zikiaiDialog.lookup("#displayPicture").isVisible());
+                ImageView zikiaiAvatar = (ImageView) zikiaiDialog.lookup("#displayPicture");
+                assertEquals(23.0, ((Circle) zikiaiAvatar.getClip()).getRadius());
+                assertTrue(((Label) root.lookup("#commandHint")).getText().contains("priority 1 high"));
                 input.setText("mark 99");
                 input.fireEvent(new ActionEvent());
                 assertTrue(lastReply(dialogs).contains("That task number does not exist."));
