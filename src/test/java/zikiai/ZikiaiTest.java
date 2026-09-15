@@ -34,9 +34,9 @@ class ZikiaiTest {
     void getResponse_allTaskTypes_savedAndLoaded() {
         Zikiai bot = newSession();
         assertTrue(bot.canAcceptCommands());
-        assertEquals("Hello! I'm Zikiai.\nWhat can I do for you?", bot.getWelcome());
-        assertEquals("Got it. I've added this task:\n    [T][ ] read book\n"
-                + "Now you have 1 tasks in the list.", bot.getResponse("todo read book"));
+        assertEquals("Hello! I'm Zikiai, your task buddy.\nWhat do you need help with today ah?", bot.getWelcome());
+        assertEquals("Can! I've added this task for you:\n    [T][ ] read book\n"
+                + "You have 1 task in your list now.", bot.getResponse("todo read book"));
         assertTrue(bot.getResponse("deadline return book /by 2026-08-30")
                 .contains("[D][ ] return book (by: Aug 30 2026)"));
         assertTrue(bot.getResponse("event meeting /from 2pm /to 4pm")
@@ -49,12 +49,12 @@ class ZikiaiTest {
         Zikiai bot = newSession();
         bot.getResponse("todo first");
         bot.getResponse("todo second");
-        assertEquals("Nice! I've marked this task as done:\n    [T][X] second", bot.getResponse("mark 2"));
+        assertEquals("Shiok! This task is done already:\n    [T][X] second", bot.getResponse("mark 2"));
         assertTrue(newSession().getResponse("list").contains("2.[T][X] second"));
-        assertEquals("OK, I've marked this task as not done yet:\n    [T][ ] second", bot.getResponse("unmark 2"));
-        assertEquals("Noted. I've removed this task:\n    [T][ ] first\nNow you have 1 tasks in the list.",
+        assertEquals("Okay can, this task is not done yet:\n    [T][ ] second", bot.getResponse("unmark 2"));
+        assertEquals("Okay, removed this task already:\n    [T][ ] first\nYou have 1 task in your list now.",
                 bot.getResponse("delete 1"));
-        assertEquals("Here are the tasks in your list:\n1.[T][ ] second", newSession().getResponse("list"));
+        assertEquals("Here are your tasks:\n1.[T][ ] second", newSession().getResponse("list"));
     }
 
     @Test
@@ -63,17 +63,17 @@ class ZikiaiTest {
         bot.getResponse("todo read book");
 
         assertEquals(
-                "Got it. I've updated this task's priority:\n    [T][HIGH][ ] read book",
+                "Steady! I've updated this task's priority:\n    [T][HIGH][ ] read book",
                 bot.getResponse("priority 1 high"));
         assertEquals(
-                "Here are the tasks in your list:\n1.[T][HIGH][ ] read book",
+                "Here are your tasks:\n1.[T][HIGH][ ] read book",
                 newSession().getResponse("list"));
 
         assertEquals(
-                "Got it. I've updated this task's priority:\n    [T][ ] read book",
+                "Steady! I've updated this task's priority:\n    [T][ ] read book",
                 bot.getResponse("priority 1 none"));
         assertEquals(
-                "Here are the tasks in your list:\n1.[T][ ] read book",
+                "Here are your tasks:\n1.[T][ ] read book",
                 newSession().getResponse("list"));
     }
 
@@ -86,21 +86,21 @@ class ZikiaiTest {
             "unmark 0", "delete 99", "priority", "priority one high", "priority 1 urgent",
             "priority 99 high", "find", "unknown", ""};
         for (String input : invalidInputs) {
-            assertTrue(bot.getResponse(input).startsWith("OOPSSSIES!!! "), input);
+            assertTrue(bot.getResponse(input).startsWith("Aiyo! "), input);
             assertEquals(original, bot.getResponse("list"), input);
         }
-        assertEquals("There are none!", bot.getResponse("find missing"));
-        assertEquals("Here are the matching tasks in your list:\n1.[T][ ] keep me", bot.getResponse("find keep"));
+        assertEquals("Aiyo, no matching tasks leh.", bot.getResponse("find missing"));
+        assertEquals("Found these matching tasks for you:\n1.[T][ ] keep me", bot.getResponse("find keep"));
         assertEquals(original, newSession().getResponse("list"));
     }
 
     @Test
     void getResponse_bye_blocksFurtherChanges() {
         Zikiai bot = newSession();
-        assertEquals("okay, bai bai", bot.getResponse("bye"));
+        assertEquals("Okay, bye bye! See you again, lah.", bot.getResponse("bye"));
         assertFalse(bot.canAcceptCommands());
-        assertEquals("okay, bai bai", bot.getResponse("todo should not be added"));
-        assertEquals("Here are the tasks in your list:", newSession().getResponse("list"));
+        assertEquals("Okay, bye bye! See you again, lah.", bot.getResponse("todo should not be added"));
+        assertEquals("Here are your tasks:", newSession().getResponse("list"));
     }
 
     @Test
@@ -109,7 +109,7 @@ class ZikiaiTest {
         Files.writeString(file, "invalid saved data\n");
         Zikiai bot = newSession();
         assertFalse(bot.canAcceptCommands());
-        assertEquals("OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.", bot.getWelcome());
+        assertEquals("Aiyo! I couldn't load the saved tasks because line 1 is invalid.", bot.getWelcome());
         assertEquals(bot.getWelcome(), bot.getResponse("todo do not overwrite"));
         assertEquals("invalid saved data\n", Files.readString(file));
     }
@@ -119,7 +119,7 @@ class ZikiaiTest {
         Path parent = directory.resolve("blocked");
         Zikiai bot = new Zikiai(new Storage(parent.resolve("tasks.txt")));
         Files.writeString(parent, "not a directory");
-        assertEquals("OOPSSSIES!!! I couldn't save your tasks to the data file.", bot.getResponse("todo test"));
+        assertEquals("Aiyo! I couldn't save your tasks to the data file.", bot.getResponse("todo test"));
         assertTrue(bot.canAcceptCommands());
         assertEquals("not a directory", Files.readString(parent));
     }

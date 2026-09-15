@@ -13,7 +13,7 @@
     <children>
         <Pane styleClass="header-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefHeight="64.0" />
         <Label alignment="CENTER" styleClass="app-title" text="Zikiai" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
-        <Label alignment="CENTER" styleClass="app-subtitle" text="your calm task companion" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0" />
+        <Label alignment="CENTER" styleClass="app-subtitle" text="your steady task kaki" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0" />
         <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" hvalue="1.0" vvalue="1.0" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
             <content>
                 <VBox fx:id="dialogContainer" fillWidth="true" spacing="2.0">

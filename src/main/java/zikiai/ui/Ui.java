@@ -60,7 +60,7 @@ public class Ui {
      * @param task task whose status changed.
      */
     public static String formatTaskMarked(Task task) {
-        return "Nice! I've marked this task as done:\n    " + task.getDescription();
+        return "Shiok! This task is done already:\n    " + task.getDescription();
     }
 
     /**
@@ -69,7 +69,7 @@ public class Ui {
      * @param task task whose status changed.
      */
     public static String formatTaskUnmarked(Task task) {
-        return "OK, I've marked this task as not done yet:\n    " + task.getDescription();
+        return "Okay can, this task is not done yet:\n    " + task.getDescription();
     }
 
     /**
@@ -78,7 +78,7 @@ public class Ui {
      * @param task task whose priority changed.
      */
     public static String formatTaskPrioritized(Task task) {
-        return "Got it. I've updated this task's priority:\n    " + task.getDescription();
+        return "Steady! I've updated this task's priority:\n    " + task.getDescription();
     }
 
     /**
@@ -88,8 +88,8 @@ public class Ui {
      * @param taskCount number of remaining tasks.
      */
     public static String formatTaskDeleted(Task task, int taskCount) {
-        return "Noted. I've removed this task:\n    " + task.getDescription()
-                + "\nNow you have " + taskCount + " tasks in the list.";
+        return "Okay, removed this task already:\n    " + task.getDescription()
+                + "\n" + formatTaskCount(taskCount);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Ui {
      * @param tasks task list to display.
      */
     public static String formatTaskList(TaskList tasks) {
-        return formatNumberedTasks("Here are the tasks in your list:", tasks);
+        return formatNumberedTasks("Here are your tasks:", tasks);
     }
 
     /**
@@ -108,9 +108,9 @@ public class Ui {
      */
     public static String formatMatchingTasks(TaskList matchingTasks) {
         if (matchingTasks.size() == 0) {
-            return "There are none!";
+            return "Aiyo, no matching tasks leh.";
         }
-        return formatNumberedTasks("Here are the matching tasks in your list:", matchingTasks);
+        return formatNumberedTasks("Found these matching tasks for you:", matchingTasks);
     }
 
     /**
@@ -131,8 +131,8 @@ public class Ui {
      * @param taskCount current number of tasks.
      */
     public static String formatTaskAdded(Task task, int taskCount) {
-        return "Got it. I've added this task:\n    " + task.getDescription()
-                + "\nNow you have " + taskCount + " tasks in the list.";
+        return "Can! I've added this task for you:\n    " + task.getDescription()
+                + "\n" + formatTaskCount(taskCount);
     }
 
     /**
@@ -141,21 +141,29 @@ public class Ui {
      * @param exception error to display.
      */
     public static String formatError(ZikiaiException exception) {
-        return "OOPSSSIES!!! " + exception.getMessage();
+        return "Aiyo! " + exception.getMessage();
     }
 
     /**
      * Formats the chatbot's farewell message.
      */
     public static String formatGoodbye() {
-        return "okay, bai bai";
+        return "Okay, bye bye! See you again, lah.";
     }
 
     /**
      * Returns the greeting shared by console and graphical interfaces.
      */
     public static String getGreeting() {
-        return "Hello! I'm Zikiai.\nWhat can I do for you?";
+        return "Hello! I'm Zikiai, your task buddy.\nWhat do you need help with today ah?";
+    }
+
+    /**
+     * Formats a grammatically correct task count with a local conversational rhythm.
+     */
+    private static String formatTaskCount(int taskCount) {
+        String taskWord = taskCount == 1 ? "task" : "tasks";
+        return "You have " + taskCount + " " + taskWord + " in your list now.";
     }
 
     /**

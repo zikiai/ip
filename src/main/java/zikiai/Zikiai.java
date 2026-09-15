@@ -109,7 +109,7 @@ public class Zikiai {
         if (parser.isEventCommand(input)) {
             return addTask(parser.parseEvent(input));
         }
-        throw new ZikiaiException("I'm sorrieeee, but I don't know what that means :-(");
+        throw new ZikiaiException("Walao, I don't understand that command leh.");
     }
 
     /**

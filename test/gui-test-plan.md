@@ -18,7 +18,7 @@ marking 99 reports that the task number does not exist; list still shows
 `1.[T][ ] read book`. The input clears after each command and remains enabled
 after the error. User messages have no avatar while Zikiai replies retain a
 circular bot avatar, and a short command-format hint remains above the input.
-After `bye`, the reply is `okay, bai bai` and both controls are disabled. Closing
+After `bye`, the reply is `Okay, bye bye! See you again, lah.` and both controls are disabled. Closing
 the window exits the application.
 
 Automated by `MainWindowTest.handleUserInput_sendAndEnter_updateDialogsAndPreserveState`.
