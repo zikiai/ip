@@ -1,7 +1,9 @@
 package zikiai.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +18,34 @@ import zikiai.task.Todo;
  */
 class ParserTest {
     private final Parser parser = new Parser();
+
+    @Test
+    void commandRecognition_exactAndIncompleteKnownCommands_recognized() {
+        assertTrue(parser.isByeCommand("bye"));
+        assertTrue(parser.isListCommand("list"));
+        assertTrue(parser.isMarkCommand("mark"));
+        assertTrue(parser.isUnmarkCommand("unmark task"));
+        assertTrue(parser.isDeleteCommand("delete\t1"));
+        assertTrue(parser.isFindCommand("find"));
+        assertTrue(parser.isTodoCommand("todo read book"));
+        assertTrue(parser.isDeadlineCommand("deadline task"));
+        assertTrue(parser.isEventCommand("event meeting"));
+        assertTrue(parser.isPriorityCommand("priority"));
+    }
+
+    @Test
+    void commandRecognition_prefixCollisions_notRecognized() {
+        assertFalse(parser.isByeCommand("byebye"));
+        assertFalse(parser.isListCommand("listing"));
+        assertFalse(parser.isMarkCommand("marker 1"));
+        assertFalse(parser.isUnmarkCommand("unmarked 1"));
+        assertFalse(parser.isDeleteCommand("deleted 1"));
+        assertFalse(parser.isFindCommand("finder book"));
+        assertFalse(parser.isTodoCommand("todos read book"));
+        assertFalse(parser.isDeadlineCommand("deadlines task"));
+        assertFalse(parser.isEventCommand("events meeting"));
+        assertFalse(parser.isPriorityCommand("priority-level 1"));
+    }
 
     @Test
     void parseTaskIndex_firstTask_zeroBasedIndexReturned() throws ZikiaiException {

@@ -28,6 +28,46 @@ class StorageTest {
     private Path directory;
 
     @Test
+    void load_missingFile_emptyListReturned() throws ZikiaiException {
+        List<Task> tasks = new Storage(directory.resolve("missing/tasks.txt")).load();
+
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    void load_blankLines_blankLinesIgnored() throws IOException, ZikiaiException {
+        Path file = directory.resolve("tasks.txt");
+        Files.writeString(file, "\n[T][ ] | read book\n   \n");
+
+        List<Task> tasks = new Storage(file).load();
+
+        assertEquals(1, tasks.size());
+        assertEquals("[T][ ] read book", tasks.get(0).getDescription());
+    }
+
+    @Test
+    void save_missingParentDirectories_directoriesAndFileCreated()
+            throws IOException, ZikiaiException {
+        Path file = directory.resolve("nested/data/tasks.txt");
+        Storage storage = new Storage(file);
+
+        storage.save(new TaskList(List.of(new Todo("read book"))));
+
+        assertEquals(List.of("[T][ ] | read book"), Files.readAllLines(file));
+    }
+
+    @Test
+    void save_emptyTaskList_existingContentsTruncated()
+            throws IOException, ZikiaiException {
+        Path file = directory.resolve("tasks.txt");
+        Files.writeString(file, "[T][ ] | stale task\n");
+
+        new Storage(file).save(new TaskList());
+
+        assertEquals(List.of(), Files.readAllLines(file));
+    }
+
+    @Test
     void load_legacyTaskWithoutPriority_nonePriorityLoaded()
             throws IOException, ZikiaiException {
         Path file = directory.resolve("tasks.txt");
@@ -82,5 +122,29 @@ class StorageTest {
         assertEquals(
                 "I couldn't load the saved tasks because line 1 is invalid.",
                 exception.getMessage());
+    }
+
+    @Test
+    void load_malformedTaskFields_eachLineRejectedWithItsLineNumber() throws IOException {
+        String[] invalidLines = {
+            "[T][?] | invalid status",
+            "[D][ ] | missing date",
+            "[D][ ] | invalid date | 2025-02-29",
+            "[E][ ] | missing end | 2pm",
+            "[T][ ] | "
+        };
+        Path file = directory.resolve("tasks.txt");
+
+        for (String invalidLine : invalidLines) {
+            Files.writeString(file, "\n" + invalidLine + "\n");
+
+            ZikiaiException exception = assertThrows(
+                    ZikiaiException.class, () -> new Storage(file).load(), invalidLine);
+
+            assertEquals(
+                    "I couldn't load the saved tasks because line 2 is invalid.",
+                    exception.getMessage(),
+                    invalidLine);
+        }
     }
 }
