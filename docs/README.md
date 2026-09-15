@@ -5,6 +5,8 @@ It helps you record todos, deadlines, and events, track their completion, set
 priorities, and find tasks. Your changes are saved automatically between
 sessions.
 
+![Zikiai graphical interface](Ui.png)
+
 ## Starting Zikiai
 
 1. Install Java 25.
