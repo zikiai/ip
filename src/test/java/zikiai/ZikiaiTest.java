@@ -95,6 +95,34 @@ class ZikiaiTest {
     }
 
     @Test
+    void getResponse_harmlessWhitespace_commandsAcceptedAndSaved() {
+        Zikiai bot = newSession();
+
+        assertTrue(bot.getResponse("   todo     read book   ").contains("[T][ ] read book"));
+        assertTrue(bot.getResponse("mark     1").contains("[T][X] read book"));
+        assertEquals("Here are your tasks:\n1.[T][X] read book", bot.getResponse("   list   "));
+        assertEquals(bot.getResponse("list"), newSession().getResponse("list"));
+    }
+
+    @Test
+    void getResponse_malformedKnownCommands_actionableFormatsReturned() {
+        Zikiai bot = newSession();
+
+        assertEquals(
+                "Aiyo! Use mark TASK_NUMBER, for example mark 1.",
+                bot.getResponse("mark homework"));
+        assertEquals(
+                "Aiyo! Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                        + "deadline submit report /by 2026-09-30.",
+                bot.getResponse("deadline submit report"));
+        assertEquals(
+                "Aiyo! Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
+                bot.getResponse("event meeting /to 4pm /from 2pm"));
+        assertEquals("Here are your tasks:", bot.getResponse("list"));
+    }
+
+    @Test
     void getResponse_bye_blocksFurtherChanges() {
         Zikiai bot = newSession();
         assertEquals("Okay, bye bye! See you again, lah.", bot.getResponse("bye"));

@@ -27,6 +27,16 @@ public class Parser {
     private static final String BY_MARKER = "/by";
     private static final String FROM_MARKER = "/from";
     private static final String TO_MARKER = "/to";
+    private static final String TODO_FORMAT_MESSAGE =
+            "Use todo DESCRIPTION, for example todo read book.";
+    private static final String DEADLINE_FORMAT_MESSAGE =
+            "Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                    + "deadline submit report /by 2026-09-30.";
+    private static final String EVENT_FORMAT_MESSAGE =
+            "Use event DESCRIPTION /from START /to END, for example "
+                    + "event meeting /from 2pm /to 4pm.";
+    private static final String FIND_FORMAT_MESSAGE =
+            "Use find KEYWORD, for example find book.";
 
     /**
      * Creates a parser for recognizing and validating Zikiai commands.
@@ -45,33 +55,33 @@ public class Parser {
     }
 
     /**
-     * Returns whether the input is a valid mark command shape.
+     * Returns whether the input begins a mark command.
      *
      * @param input complete user input.
-     * @return true when the command contains a numeric task number.
+     * @return true for a mark command, including a malformed one.
      */
     public boolean isMarkCommand(String input) {
-        return isNumberedCommand(input, MARK_COMMAND);
+        return isCommandWithOptionalArguments(input, MARK_COMMAND);
     }
 
     /**
-     * Returns whether the input is a valid unmark command shape.
+     * Returns whether the input begins an unmark command.
      *
      * @param input complete user input.
-     * @return true when the command contains a numeric task number.
+     * @return true for an unmark command, including a malformed one.
      */
     public boolean isUnmarkCommand(String input) {
-        return isNumberedCommand(input, UNMARK_COMMAND);
+        return isCommandWithOptionalArguments(input, UNMARK_COMMAND);
     }
 
     /**
-     * Returns whether the input is a valid delete command shape.
+     * Returns whether the input begins a delete command.
      *
      * @param input complete user input.
-     * @return true when the command contains a numeric task number.
+     * @return true for a delete command, including a malformed one.
      */
     public boolean isDeleteCommand(String input) {
-        return isNumberedCommand(input, DELETE_COMMAND);
+        return isCommandWithOptionalArguments(input, DELETE_COMMAND);
     }
 
     /**
@@ -143,12 +153,17 @@ public class Parser {
      * @throws ZikiaiException if the number is too large or does not identify a task.
      */
     public int parseTaskIndex(String input, int taskCount) throws ZikiaiException {
-        assert input != null && input.matches("(?:mark|unmark|delete) \\d+")
-                : "Input must be a numbered task command";
+        assert input != null
+                && (isMarkCommand(input) || isUnmarkCommand(input) || isDeleteCommand(input))
+                : "Input must be a task command requiring a number";
         assert taskCount >= 0 : "Task count must not be negative";
 
-        String numberText = input.substring(input.indexOf(' ')).trim();
-        return parseTaskNumber(numberText, taskCount);
+        String[] parts = input.trim().split("\\s+");
+        String command = parts[0];
+        if (parts.length != 2 || !parts[1].matches("\\d+")) {
+            throw invalidNumberedCommand(command);
+        }
+        return parseTaskNumber(parts[1], taskCount);
     }
 
     /**
@@ -222,6 +237,14 @@ public class Parser {
     }
 
     /**
+     * Creates an actionable format error for a command requiring one task number.
+     */
+    private ZikiaiException invalidNumberedCommand(String command) {
+        return new ZikiaiException(
+                "Use " + command + " TASK_NUMBER, for example " + command + " 1.");
+    }
+
+    /**
      * Extracts and validates the keyword in a find command.
      *
      * @param input complete find command.
@@ -231,7 +254,7 @@ public class Parser {
     public String parseFindKeyword(String input) throws ZikiaiException {
         String keyword = input.substring(FIND_COMMAND.length()).trim();
         if (keyword.isEmpty()) {
-            throw new ZikiaiException("Please enter a keyword to find.");
+            throw new ZikiaiException(FIND_FORMAT_MESSAGE);
         }
         return keyword;
     }
@@ -245,12 +268,12 @@ public class Parser {
      */
     public Todo parseTodo(String input) throws ZikiaiException {
         if (input.equals(TODO_COMMAND)) {
-            throw new ZikiaiException("The description of a todo cannot be empty.");
+            throw new ZikiaiException(TODO_FORMAT_MESSAGE);
         }
 
         String description = input.substring(TODO_COMMAND.length()).trim();
         if (description.isEmpty()) {
-            throw new ZikiaiException("The description of a todo cannot be empty.");
+            throw new ZikiaiException(TODO_FORMAT_MESSAGE);
         }
         validateStorageText(description);
         return new Todo(description);
@@ -265,19 +288,19 @@ public class Parser {
      */
     public Deadline parseDeadline(String input) throws ZikiaiException {
         if (input.equals(DEADLINE_COMMAND)) {
-            throw new ZikiaiException("The description of a deadline cannot be empty.");
+            throw new ZikiaiException(DEADLINE_FORMAT_MESSAGE);
         }
 
         String details = input.substring(DEADLINE_COMMAND.length()).trim();
         int byIndex = details.indexOf(BY_MARKER);
-        if (byIndex == -1) {
-            throw new ZikiaiException("Please specify a deadline using /by.");
+        if (byIndex == -1 || byIndex != details.lastIndexOf(BY_MARKER)) {
+            throw new ZikiaiException(DEADLINE_FORMAT_MESSAGE);
         }
 
         String description = details.substring(0, byIndex).trim();
         String deadlineText = details.substring(byIndex + BY_MARKER.length()).trim();
         if (description.isEmpty() || deadlineText.isEmpty()) {
-            throw new ZikiaiException("Please provide both a task and a deadline.");
+            throw new ZikiaiException(DEADLINE_FORMAT_MESSAGE);
         }
         validateStorageText(description, deadlineText);
         return new Deadline(description, parseDeadlineDate(deadlineText));
@@ -292,41 +315,38 @@ public class Parser {
      */
     public Event parseEvent(String input) throws ZikiaiException {
         if (input.equals(EVENT_COMMAND)) {
-            throw new ZikiaiException("The description of an event cannot be empty.");
+            throw new ZikiaiException(EVENT_FORMAT_MESSAGE);
         }
 
         String details = input.substring(EVENT_COMMAND.length()).trim();
         int fromIndex = details.indexOf(FROM_MARKER);
-        int toIndex = fromIndex == -1
-                ? -1
-                : details.indexOf(TO_MARKER, fromIndex + FROM_MARKER.length());
-        if (fromIndex == -1 || toIndex == -1) {
-            throw new ZikiaiException("Please specify an event using /from and /to.");
+        int toIndex = details.indexOf(TO_MARKER);
+        boolean hasInvalidMarkers = fromIndex == -1 || toIndex == -1
+                || fromIndex > toIndex
+                || fromIndex != details.lastIndexOf(FROM_MARKER)
+                || toIndex != details.lastIndexOf(TO_MARKER);
+        if (hasInvalidMarkers) {
+            throw new ZikiaiException(EVENT_FORMAT_MESSAGE);
         }
 
         String description = details.substring(0, fromIndex).trim();
         String from = details.substring(fromIndex + FROM_MARKER.length(), toIndex).trim();
         String to = details.substring(toIndex + TO_MARKER.length()).trim();
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new ZikiaiException(
-                    "Please provide an event, a start time, and an end time.");
+            throw new ZikiaiException(EVENT_FORMAT_MESSAGE);
         }
         validateStorageText(description, from, to);
         return new Event(description, from, to);
     }
 
     /**
-     * Returns whether the input is a command followed by a numeric task number.
-     */
-    private boolean isNumberedCommand(String input, String command) {
-        return input.matches(command + " \\d+");
-    }
-
-    /**
      * Returns whether the input is a command with or without arguments.
      */
     private boolean isCommandWithOptionalArguments(String input, String command) {
-        return input.equals(command) || input.startsWith(command + " ");
+        return input.equals(command)
+                || (input.startsWith(command)
+                        && input.length() > command.length()
+                        && Character.isWhitespace(input.charAt(command.length())));
     }
 
     /**
