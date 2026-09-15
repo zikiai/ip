@@ -61,18 +61,20 @@ public class Zikiai {
      * @return confirmation, task list, or user-facing error.
      */
     public String getResponse(String input) {
+        assert input != null : "Input must not be null";
+        String normalizedInput = input.strip();
         if (loadingError != null) {
             return loadingError;
         }
         if (isExit) {
             return Ui.formatGoodbye();
         }
-        if (parser.isByeCommand(input)) {
+        if (parser.isByeCommand(normalizedInput)) {
             isExit = true;
             return Ui.formatGoodbye();
         }
         try {
-            return executeCommand(input);
+            return executeCommand(normalizedInput);
         } catch (ZikiaiException exception) {
             return Ui.formatError(exception);
         }

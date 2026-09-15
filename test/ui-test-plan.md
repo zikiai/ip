@@ -151,7 +151,7 @@ Hello! I'm Zikiai, your task buddy.
 What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! The description of a todo cannot be empty.
+Aiyo! Use todo DESCRIPTION, for example todo read book.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Aiyo! Walao, I don't understand that command leh.
@@ -290,16 +290,16 @@ Can! I've added this task for you:
 You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Please specify a deadline using /by.
+Aiyo! Use deadline DESCRIPTION /by yyyy-MM-dd, for example deadline submit report /by 2026-09-30.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Please provide both a task and a deadline.
+Aiyo! Use deadline DESCRIPTION /by yyyy-MM-dd, for example deadline submit report /by 2026-09-30.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Please specify an event using /from and /to.
+Aiyo! Use event DESCRIPTION /from START /to END, for example event meeting /from 2pm /to 4pm.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Please provide an event, a start time, and an end time.
+Aiyo! Use event DESCRIPTION /from START /to END, for example event meeting /from 2pm /to 4pm.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Here are your tasks:
@@ -341,21 +341,21 @@ Can! I've added this task for you:
 You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Walao, I don't understand that command leh.
+Aiyo! Use mark TASK_NUMBER, for example mark 1.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Shiok! This task is done already:
     [T][X] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Walao, I don't understand that command leh.
+Aiyo! Use unmark TASK_NUMBER, for example unmark 1.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Okay can, this task is not done yet:
     [T][ ] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Walao, I don't understand that command leh.
+Aiyo! Use delete TASK_NUMBER, for example delete 1.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Here are your tasks:
@@ -807,6 +807,77 @@ Okay, bye bye! See you again, lah.
 [T][ ] | keep me
 ```
 
+## TC-26 Handle command spacing and malformed parameters
+
+**Aim:** Interleave harmless whitespace, malformed numbered commands, duplicate
+or reversed markers, and valid commands to verify that errors are actionable and
+do not corrupt task state.
+
+### Input
+
+```text
+   todo     spaced task
+mark
+mark     1
+deadline report /by 2026-09-30 /by 2026-10-01
+deadline submit report /by 2026-09-30
+event meeting /to 4pm /from 2pm
+event meeting /from 2pm /to 4pm /to 5pm
+   list
+bye
+```
+
+### Expected output
+
+```text
+{{SEPARATOR}}
+{{BANNER}}
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
+{{SEPARATOR}}
+{{SEPARATOR}}
+Can! I've added this task for you:
+    [T][ ] spaced task
+You have 1 task in your list now.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Aiyo! Use mark TASK_NUMBER, for example mark 1.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Shiok! This task is done already:
+    [T][X] spaced task
+{{SEPARATOR}}
+{{SEPARATOR}}
+Aiyo! Use deadline DESCRIPTION /by yyyy-MM-dd, for example deadline submit report /by 2026-09-30.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Can! I've added this task for you:
+    [D][ ] submit report (by: Sep 30 2026)
+You have 2 tasks in your list now.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Aiyo! Use event DESCRIPTION /from START /to END, for example event meeting /from 2pm /to 4pm.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Aiyo! Use event DESCRIPTION /from START /to END, for example event meeting /from 2pm /to 4pm.
+{{SEPARATOR}}
+{{SEPARATOR}}
+Here are your tasks:
+1.[T][X] spaced task
+2.[D][ ] submit report (by: Sep 30 2026)
+{{SEPARATOR}}
+{{SEPARATOR}}
+Okay, bye bye! See you again, lah.
+{{SEPARATOR}}
+```
+
+### Expected data file
+
+```text
+[T][X] | spaced task
+[D][ ] | submit report | 2026-09-30
+```
+
 ## TC-23 Assign, display, persist, and clear priorities
 
 **Aim:** Verify that priorities can be assigned to different task types, displayed in the list, saved, and cleared using `none`.
@@ -1215,7 +1286,7 @@ Can! I've added this task for you:
 You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Aiyo! Please enter a keyword to find.
+Aiyo! Use find KEYWORD, for example find book.
 {{SEPARATOR}}
 {{SEPARATOR}}
 Aiyo, no matching tasks leh.

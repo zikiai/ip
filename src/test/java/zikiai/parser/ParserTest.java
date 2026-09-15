@@ -28,6 +28,19 @@ class ParserTest {
     }
 
     @Test
+    void parseTaskIndex_repeatedWhitespace_zeroBasedIndexReturned() throws ZikiaiException {
+        assertEquals(1, parser.parseTaskIndex("mark    2", 3));
+    }
+
+    @Test
+    void parseTaskIndex_missingNumber_actionableFormatThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseTaskIndex("unmark", 3));
+
+        assertEquals("Use unmark TASK_NUMBER, for example unmark 1.", exception.getMessage());
+    }
+
+    @Test
     void parseTaskIndex_zero_exceptionThrown() {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseTaskIndex("mark 0", 3));
@@ -125,7 +138,7 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseFindKeyword("find"));
 
-        assertEquals("Please enter a keyword to find.", exception.getMessage());
+        assertEquals("Use find KEYWORD, for example find book.", exception.getMessage());
     }
 
     @Test
@@ -133,7 +146,7 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseFindKeyword("find   "));
 
-        assertEquals("Please enter a keyword to find.", exception.getMessage());
+        assertEquals("Use find KEYWORD, for example find book.", exception.getMessage());
     }
 
     @Test
@@ -149,7 +162,7 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseTodo("todo   "));
 
-        assertEquals("The description of a todo cannot be empty.", exception.getMessage());
+        assertEquals("Use todo DESCRIPTION, for example todo read book.", exception.getMessage());
     }
 
     @Test
@@ -173,7 +186,10 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseDeadline("deadline submit report 2026-08-23"));
 
-        assertEquals("Please specify a deadline using /by.", exception.getMessage());
+        assertEquals(
+                "Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                        + "deadline submit report /by 2026-09-30.",
+                exception.getMessage());
     }
 
     @Test
@@ -181,7 +197,10 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseDeadline("deadline /by 2026-08-23"));
 
-        assertEquals("Please provide both a task and a deadline.", exception.getMessage());
+        assertEquals(
+                "Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                        + "deadline submit report /by 2026-09-30.",
+                exception.getMessage());
     }
 
     @Test
@@ -189,7 +208,22 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseDeadline("deadline submit report /by"));
 
-        assertEquals("Please provide both a task and a deadline.", exception.getMessage());
+        assertEquals(
+                "Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                        + "deadline submit report /by 2026-09-30.",
+                exception.getMessage());
+    }
+
+    @Test
+    void parseDeadline_duplicateByMarker_actionableFormatThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseDeadline(
+                        "deadline report /by 2026-09-30 /by 2026-10-01"));
+
+        assertEquals(
+                "Use deadline DESCRIPTION /by yyyy-MM-dd, for example "
+                        + "deadline submit report /by 2026-09-30.",
+                exception.getMessage());
     }
 
     @Test
@@ -249,7 +283,10 @@ class ParserTest {
         ZikiaiException exception = assertThrows(
                 ZikiaiException.class, () -> parser.parseEvent("event team meeting /from Mon 2pm"));
 
-        assertEquals("Please specify an event using /from and /to.", exception.getMessage());
+        assertEquals(
+                "Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
+                exception.getMessage());
     }
 
     @Test
@@ -258,7 +295,8 @@ class ParserTest {
                 ZikiaiException.class, () -> parser.parseEvent("event /from Mon 2pm /to 4pm"));
 
         assertEquals(
-                "Please provide an event, a start time, and an end time.",
+                "Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
                 exception.getMessage());
     }
 
@@ -268,7 +306,8 @@ class ParserTest {
                 ZikiaiException.class, () -> parser.parseEvent("event team meeting /from /to 4pm"));
 
         assertEquals(
-                "Please provide an event, a start time, and an end time.",
+                "Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
                 exception.getMessage());
     }
 
@@ -278,7 +317,20 @@ class ParserTest {
                 ZikiaiException.class, () -> parser.parseEvent("event team meeting /from Mon 2pm /to"));
 
         assertEquals(
-                "Please provide an event, a start time, and an end time.",
+                "Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
+                exception.getMessage());
+    }
+
+    @Test
+    void parseEvent_reversedMarkers_actionableFormatThrown() {
+        ZikiaiException exception = assertThrows(
+                ZikiaiException.class, () -> parser.parseEvent(
+                        "event meeting /to 4pm /from 2pm"));
+
+        assertEquals(
+                "Use event DESCRIPTION /from START /to END, for example "
+                        + "event meeting /from 2pm /to 4pm.",
                 exception.getMessage());
     }
 
