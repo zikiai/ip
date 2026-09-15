@@ -26,6 +26,16 @@
     -fx-text-fill: #667b75;
 }
 
+.composer-bar {
+    -fx-background-color: rgba(250, 248, 242, 0.92);
+    -fx-border-color: rgba(65, 108, 99, 0.16) transparent transparent transparent;
+}
+
+.command-hint {
+    -fx-font-size: 11px;
+    -fx-text-fill: #667b75;
+}
+
 .text-field {
     -fx-background-color: rgba(255, 253, 248, 0.95);
     -fx-background-radius: 9px;

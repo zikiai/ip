@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.shape.Circle;
 
 /**
  * Displays a wrapped chat message beside the speaker's tutorial avatar.
@@ -31,6 +32,7 @@ public class DialogBox extends HBox {
         }
         dialog.setText(text);
         displayPicture.setImage(image);
+        displayPicture.setClip(new Circle(23.0, 23.0, 23.0));
         HBox.setHgrow(dialog, Priority.ALWAYS);
     }
 
@@ -42,7 +44,11 @@ public class DialogBox extends HBox {
      * @return user chat bubble.
      */
     public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+        DialogBox box = new DialogBox(text, image);
+        box.displayPicture.setManaged(false);
+        box.displayPicture.setVisible(false);
+        box.getStyleClass().add("user-dialog");
+        return box;
     }
 
     /**
@@ -56,6 +62,7 @@ public class DialogBox extends HBox {
         DialogBox box = new DialogBox(text, image);
         box.getChildren().setAll(box.displayPicture, box.dialog);
         box.setAlignment(Pos.TOP_LEFT);
+        box.getStyleClass().add("zikiai-dialog");
         box.dialog.getStyleClass().add("reply-label");
         return box;
     }

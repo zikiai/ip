@@ -20,6 +20,14 @@
     -fx-border-radius: 14px 14px 14px 3px;
 }
 
+.user-dialog {
+    -fx-padding: 5px 8px 5px 54px;
+}
+
+.zikiai-dialog {
+    -fx-padding: 5px 54px 5px 6px;
+}
+
 #displayPicture {
     -fx-effect: dropshadow(gaussian, rgba(38, 54, 50, 0.24), 7, 0.2, 0, 2);
 }
