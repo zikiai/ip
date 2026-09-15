@@ -10,8 +10,8 @@ sessions.
 ## Starting Zikiai
 
 1. Install Java 25.
-2. Download the `zikiai.jar` file for your operating system and processor from
-   the [latest Zikiai release](https://github.com/zikiai/ip/releases/latest).
+2. Download `zikiai.jar` from the
+   [latest Zikiai release](https://github.com/zikiai/ip/releases/latest).
 3. Put the JAR in its own folder and open a terminal in that folder.
 4. Run:
 
@@ -19,8 +19,7 @@ sessions.
    java -jar "zikiai.jar"
    ```
 
-The released GUI JAR includes platform-specific JavaFX libraries. Use a build
-created for your operating system and processor architecture.
+The same released JAR supports Windows, macOS, and Linux.
 
 ## Using the chatbot
 

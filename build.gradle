@@ -30,13 +30,11 @@ dependencies {
     String jUnitVersion = '5.14.4'
     String javaFxVersion = '17.0.7'
 
-    // JavaFX native libraries must match the machine running this build.
-    String osName = System.getProperty('os.name').toLowerCase()
-    boolean isArm = System.getProperty('os.arch') in ['aarch64', 'arm64']
-    String javaFxPlatform = osName.contains('mac') ? (isArm ? 'mac-aarch64' : 'mac')
-            : osName.contains('win') ? 'win' : (isArm ? 'linux-aarch64' : 'linux')
+    // Bundle JavaFX native libraries for every OS supported by the release JAR.
     ['base', 'controls', 'fxml', 'graphics'].each { module ->
-        implementation "org.openjfx:javafx-${module}:${javaFxVersion}:${javaFxPlatform}"
+        ['win', 'mac', 'linux'].each { platform ->
+            implementation "org.openjfx:javafx-${module}:${javaFxVersion}:${platform}"
+        }
     }
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"

@@ -97,9 +97,9 @@ Do not run multiple sessions against that file at the same time.
 
 Zikiai uses the Shadow plugin to create a self-contained JAR containing the
 application and its runtime dependencies.
-The JAR opens the GUI through `zikiai.Launcher`. JavaFX native libraries are
-selected for the build machine's operating system and CPU architecture: this
-JAR is platform-specific, so build on the target platform for distribution.
+The JAR opens the GUI through `zikiai.Launcher` and includes the JavaFX native
+libraries required by Windows, macOS, and Linux. The same generated JAR can be
+distributed to users of all three operating systems.
 
 From the project root, build the JAR using:
 
