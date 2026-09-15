@@ -30,20 +30,20 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] borrow book
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] borrow book
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -65,24 +65,24 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Nice! I've marked this task as done:
+Shiok! This task is done already:
     [D][X] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[D][X] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -105,28 +105,28 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Nice! I've marked this task as done:
+Shiok! This task is done already:
     [E][X] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-OK, I've marked this task as not done yet:
+Okay can, this task is not done yet:
     [E][ ] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -147,17 +147,17 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! The description of a todo cannot be empty.
+Aiyo! The description of a todo cannot be empty.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+Aiyo! Walao, I don't understand that command leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -180,26 +180,26 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] read book
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -224,39 +224,39 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] read book
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 3 tasks in the list.
+You have 3 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Noted. I've removed this task:
+Okay, removed this task already:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] read book
 2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -281,32 +281,32 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] keep me
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please specify a deadline using /by.
+Aiyo! Please specify a deadline using /by.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please provide both a task and a deadline.
+Aiyo! Please provide both a task and a deadline.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please specify an event using /from and /to.
+Aiyo! Please specify an event using /from and /to.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please provide an event, a start time, and an end time.
+Aiyo! Please provide an event, a start time, and an end time.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -332,37 +332,37 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] alpha
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+Aiyo! Walao, I don't understand that command leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Nice! I've marked this task as done:
+Shiok! This task is done already:
     [T][X] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+Aiyo! Walao, I don't understand that command leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OK, I've marked this task as not done yet:
+Okay can, this task is not done yet:
     [T][ ] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I'm sorrieeee, but I don't know what that means :-(
+Aiyo! Walao, I don't understand that command leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] alpha
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -388,43 +388,43 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] first
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] second
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] third
-Now you have 3 tasks in the list.
+You have 3 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Noted. I've removed this task:
+Okay, removed this task already:
     [T][ ] second
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Nice! I've marked this task as done:
+Shiok! This task is done already:
     [T][X] third
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] first
 2.[T][X] third
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -451,38 +451,38 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] saved task
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number is too large.
+Aiyo! That task number is too large.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number is too large.
+Aiyo! That task number is too large.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] saved task
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -506,35 +506,35 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] read book
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 3 tasks in the list.
+You have 3 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Nice! I've marked this task as done:
+Shiok! This task is done already:
     [T][X] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Noted. I've removed this task:
+Okay, removed this task already:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -562,21 +562,21 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] temporary task
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Noted. I've removed this task:
+Okay, removed this task already:
     [T][ ] temporary task
-Now you have 0 tasks in the list.
+You have 0 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -613,31 +613,31 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][X] read book
 2.[D][ ] return book (by: Aug 23 2026)
 3.[E][X] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-OK, I've marked this task as not done yet:
+Okay can, this task is not done yet:
     [T][ ] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Noted. I've removed this task:
+Okay, removed this task already:
     [D][ ] return book (by: Aug 23 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] read book
 2.[E][X] project meeting (from: Mon 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -669,11 +669,11 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+Aiyo! I couldn't load the saved tasks because line 1 is invalid.
 {{SEPARATOR}}
 ```
 
@@ -705,11 +705,11 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I couldn't load the saved tasks because line 2 is invalid.
+Aiyo! I couldn't load the saved tasks because line 2 is invalid.
 {{SEPARATOR}}
 ```
 
@@ -741,11 +741,11 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+Aiyo! I couldn't load the saved tasks because line 1 is invalid.
 {{SEPARATOR}}
 ```
 
@@ -775,29 +775,29 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] keep me
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Task details cannot contain the | character.
+Aiyo! Task details cannot contain the | character.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Task details cannot contain the | character.
+Aiyo! Task details cannot contain the | character.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Task details cannot contain the | character.
+Aiyo! Task details cannot contain the | character.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -829,43 +829,43 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] read book
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [D][ ] submit report (by: Sep 20 2026)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've updated this task's priority:
+Steady! I've updated this task's priority:
     [T][HIGH][ ] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've updated this task's priority:
+Steady! I've updated this task's priority:
     [D][MEDIUM][ ] submit report (by: Sep 20 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][HIGH][ ] read book
 2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've updated this task's priority:
+Steady! I've updated this task's priority:
     [T][ ] read book
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] read book
 2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -900,45 +900,45 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] keep me
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Use priority TASK_NUMBER with high, medium, low, or none.
+Aiyo! Use priority TASK_NUMBER with high, medium, low, or none.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Use priority TASK_NUMBER with high, medium, low, or none.
+Aiyo! Use priority TASK_NUMBER with high, medium, low, or none.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! That task number does not exist.
+Aiyo! That task number does not exist.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've updated this task's priority:
+Steady! I've updated this task's priority:
     [T][LOW][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][LOW][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -974,27 +974,27 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][HIGH][X] read book
 2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
 3.[E][LOW][ ] project meeting (from: 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've updated this task's priority:
+Steady! I've updated this task's priority:
     [E][HIGH][ ] project meeting (from: 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][HIGH][X] read book
 2.[D][MEDIUM][ ] submit report (by: Sep 20 2026)
 3.[E][HIGH][ ] project meeting (from: 2pm to: 4pm)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -1028,14 +1028,14 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -1066,36 +1066,36 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] keep me
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
+Aiyo! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
+Aiyo! Please enter the deadline as yyyy-MM-dd, for example 2026-08-23.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [D][ ] leap day (by: Feb 29 2024)
-Now you have 2 tasks in the list.
+You have 2 tasks in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 2.[D][ ] leap day (by: Feb 29 2024)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -1127,11 +1127,11 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! I couldn't load the saved tasks because line 1 is invalid.
+Aiyo! I couldn't load the saved tasks because line 1 is invalid.
 {{SEPARATOR}}
 ```
 
@@ -1165,16 +1165,16 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the matching tasks in your list:
+Found these matching tasks for you:
 1.[T][X] read book
 2.[D][ ] return book (by: Aug 23 2026)
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 
@@ -1206,30 +1206,30 @@ bye
 ```text
 {{SEPARATOR}}
 {{BANNER}}
-Hello! I'm Zikiai.
-What can I do for you?
+Hello! I'm Zikiai, your task buddy.
+What do you need help with today ah?
 {{SEPARATOR}}
 {{SEPARATOR}}
-Got it. I've added this task:
+Can! I've added this task for you:
     [T][ ] keep me
-Now you have 1 tasks in the list.
+You have 1 task in your list now.
 {{SEPARATOR}}
 {{SEPARATOR}}
-OOPSSSIES!!! Please enter a keyword to find.
+Aiyo! Please enter a keyword to find.
 {{SEPARATOR}}
 {{SEPARATOR}}
-There are none!
+Aiyo, no matching tasks leh.
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the matching tasks in your list:
+Found these matching tasks for you:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-Here are the tasks in your list:
+Here are your tasks:
 1.[T][ ] keep me
 {{SEPARATOR}}
 {{SEPARATOR}}
-okay, bai bai
+Okay, bye bye! See you again, lah.
 {{SEPARATOR}}
 ```
 

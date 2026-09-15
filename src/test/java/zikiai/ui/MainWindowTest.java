@@ -90,7 +90,7 @@ class MainWindowTest {
                 assertFalse(input.isDisabled());
                 input.setText("list");
                 send.fire();
-                assertEquals("Here are the tasks in your list:\n1.[T][ ] read book", lastReply(dialogs));
+                assertEquals("Here are your tasks:\n1.[T][ ] read book", lastReply(dialogs));
                 root.applyCss();
                 root.layout();
                 ScrollPane scroll = (ScrollPane) root.lookup("#scrollPane");
@@ -99,7 +99,7 @@ class MainWindowTest {
                 saveSnapshot(root);
                 input.setText("bye");
                 send.fire();
-                assertEquals("okay, bai bai", lastReply(dialogs));
+                assertEquals("Okay, bye bye! See you again, lah.", lastReply(dialogs));
                 assertTrue(input.isDisabled());
                 assertTrue(send.isDisabled());
             } finally {
